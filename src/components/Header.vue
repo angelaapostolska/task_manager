@@ -1,15 +1,9 @@
 <template>
-  <v-toolbar
-    flat
-    height="80"
-    color="white"
-    class="header-toolbar px-6"
-    style="position: fixed; top: 0; right: 0; z-index: 10"
-  >
+  <v-toolbar flat color="white">
     <!-- Profile Icon -->
-    <v-btn icon class="profile-icon">
+    <!-- <v-btn icon class="profile-icon">
       <v-icon size="32" color="purple-lighten-4">mdi-account-circle</v-icon>
-    </v-btn>
+    </v-btn> -->
 
     <!-- Hello User Text -->
     <v-toolbar-title class="hello-user">Hello {{ userName }}!</v-toolbar-title>
