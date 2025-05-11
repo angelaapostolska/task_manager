@@ -1,7 +1,7 @@
 <template>
   <v-card class="task-container elevation-3">
     <h2 class="div-title">Your Tasks</h2>
-    <v-row dense class="columns">
+    <v-row dense no-gutters class="columns">
       <v-col cols="12" md="4">
         <div class="header-row">
           <h3>Urgent</h3>
@@ -44,10 +44,6 @@
   color: #49484a;
   font-size: 36px;
   margin-bottom: 1.5rem;
-}
-
-.columns {
-  gap: 1rem;
 }
 
 .header-row {
