@@ -6,7 +6,8 @@
         <div class="header-row">
           <h3>Urgent</h3>
         </div>
-        <!-- You can map urgent tasks here -->
+
+        <!-- iterate and render tasks -->
       </v-col>
       <v-col cols="12" md="4">
         <div class="header-row">
@@ -23,6 +24,8 @@
 </template>
 
 <script setup>
+import { useTasks } from "@/composables/useTasks";
+
 //
 </script>
 
