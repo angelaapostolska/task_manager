@@ -4,11 +4,14 @@
     <TaskForm @add-task="handleTaskAdded" @close-form="handleCloseForm" />
   </v-dialog>
 
-  <!-- Main Task Container -->
-  <v-row>
-    <v-col cols="8"> <TaskContainer @open-form="handleShowForm" /> </v-col>
-    <v-col cols="4"> 2 </v-col>
-  </v-row>
+  <!-- scrollable div -->
+  <div class="page-container">
+    <!-- Main Task Container -->
+    <v-row>
+      <v-col cols="8"> <TaskContainer @open-form="handleShowForm" /> </v-col>
+      <v-col cols="4"> 2 </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script setup>
@@ -26,4 +29,12 @@ const handleCloseForm = () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.page-container {
+  padding: 0; /* nuke extra spacing */
+  margin: 0;
+  height: calc(100vh - 100px); /* 100px = your app bar height */
+  overflow-y: auto;
+  padding-right: 10px; /* optional: to prevent scrollbar overlap */
+}
+</style>

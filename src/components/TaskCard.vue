@@ -80,7 +80,7 @@ const deleteTask = () => {
 }
 .v-card {
   cursor: pointer;
-  background-color: #ede7f6 !important;
+  background-color: #fafafa !important;
 }
 .date-text {
   padding-top: 4px !important;

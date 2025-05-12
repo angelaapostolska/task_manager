@@ -1,10 +1,11 @@
 <template>
   <v-card class="task-container elevation-3">
-    <h2 class="div-title">Your Tasks</h2>
+    <h2 class="div-title ma-2 pa-2">Your Tasks</h2>
     <v-row dense no-gutters class="columns">
       <v-col cols="12" md="4">
-        <div class="header-row">
+        <div class="header-row ma-2 pa-2">
           <h3>Urgent</h3>
+          <span>{{ urgentDone }}/{{ urgentTasks.length }}</span>
         </div>
         <!-- iterate and render tasks -->
         <TaskCard
@@ -21,8 +22,9 @@
         </TaskCard>
       </v-col>
       <v-col cols="12" md="4">
-        <div class="header-row">
+        <div class="header-row ma-2 pa-2">
           <h3>Mid</h3>
+          <span>{{ midDone }}/{{ midTasks.length }}</span>
         </div>
         <TaskCard
           v-for="(task, index) in tasks.filter((t) => t.urgency === 'Mid')"
@@ -38,8 +40,9 @@
         </TaskCard>
       </v-col>
       <v-col cols="12" md="4">
-        <div class="header-row">
+        <div class="header-row ma-2 pa-2">
           <h3>Low</h3>
+          <span>{{ lowDone }}/{{ lowTasks.length }}</span>
         </div>
         <TaskCard
           v-for="(task, index) in tasks.filter(
@@ -64,6 +67,24 @@
 import { useTasks } from "@/composables/useTasks";
 import TaskCard from "./TaskCard.vue";
 const tasks = inject("tasks");
+
+const urgentTasks = computed(() =>
+  tasks.value.filter((t) => t.urgency === "Urgent")
+);
+const urgentDone = computed(
+  () => urgentTasks.value.filter((t) => t.completed).length
+);
+const midTasks = computed(() => tasks.value.filter((t) => t.urgency === "Mid"));
+const midDone = computed(
+  () => midTasks.value.filter((t) => t.completed).length
+);
+
+const lowTasks = computed(() =>
+  tasks.value.filter((t) => t.urgency === "Least Urgent")
+);
+const lowDone = computed(
+  () => lowTasks.value.filter((t) => t.completed).length
+);
 </script>
 
 <style scoped>
@@ -72,9 +93,8 @@ const tasks = inject("tasks");
   max-width: 1080px;
   min-height: 600px;
   background-color: #eeeeef;
-  border-radius: 16px;
   padding: 2rem;
-  margin: 2rem auto; /* centers the card horizontally */
+  margin: 1rem auto 0 auto; /* top: 1rem, sides: auto, bottom: 0 */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -83,7 +103,7 @@ const tasks = inject("tasks");
   font-weight: 600;
   color: #49484a;
   font-size: 36px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .header-row {
