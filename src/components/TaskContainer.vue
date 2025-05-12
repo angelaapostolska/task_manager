@@ -7,9 +7,10 @@
           <h3>Urgent</h3>
         </div>
         <!-- iterate and render tasks -->
-        <v-card
+        <TaskCard
           v-for="(task, index) in tasks.filter((t) => t.urgency === 'Urgent')"
           :key="index"
+          :task="task"
           class="ma-2 pa-2"
           color="pink-lighten-4"
         >
@@ -17,15 +18,16 @@
             <strong>{{ task.name }}</strong>
           </div>
           <div>{{ task.description }}</div>
-        </v-card>
+        </TaskCard>
       </v-col>
       <v-col cols="12" md="4">
         <div class="header-row">
           <h3>Mid</h3>
         </div>
-        <v-card
+        <TaskCard
           v-for="(task, index) in tasks.filter((t) => t.urgency === 'Mid')"
           :key="'mid-' + index"
+          :task="task"
           class="ma-2 pa-2"
           color="blue-lighten-4"
         >
@@ -33,17 +35,18 @@
             <strong>{{ task.name }}</strong>
           </div>
           <div>{{ task.description }}</div>
-        </v-card>
+        </TaskCard>
       </v-col>
       <v-col cols="12" md="4">
         <div class="header-row">
           <h3>Low</h3>
         </div>
-        <v-card
+        <TaskCard
           v-for="(task, index) in tasks.filter(
             (t) => t.urgency === 'Least Urgent'
           )"
           :key="'low-' + index"
+          :task="task"
           class="ma-2 pa-2"
           color="green-lighten-4"
         >
@@ -51,7 +54,7 @@
             <strong>{{ task.name }}</strong>
           </div>
           <div>{{ task.description }}</div>
-        </v-card>
+        </TaskCard>
       </v-col>
     </v-row>
   </v-card>
@@ -59,6 +62,7 @@
 
 <script setup>
 import { useTasks } from "@/composables/useTasks";
+import TaskCard from "./TaskCard.vue";
 const tasks = inject("tasks");
 </script>
 
@@ -86,7 +90,7 @@ const tasks = inject("tasks");
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .header-row h3 {

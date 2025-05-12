@@ -54,6 +54,14 @@
             auto-grow
           />
 
+          <v-text-field
+            v-model="taskEndDate"
+            label="End Date"
+            type="date"
+            variant="outlined"
+          >
+          </v-text-field>
+
           <v-btn color="deep-purple-lighten-1" class="mt-6" type="submit" block>
             Submit
           </v-btn>
@@ -76,6 +84,7 @@ const taskName = ref("");
 const taskDescription = ref("");
 const selectedUrgency = ref(null);
 const urgencies = ["Urgent", "Mid", "Least Urgent"];
+const taskEndDate = ref("");
 
 const addTaskGlobal = inject("addTask");
 
@@ -88,6 +97,7 @@ const addTask = () => {
     name: taskName.value,
     urgency: selectedUrgency.value,
     description: taskDescription.value,
+    endDate: taskEndDate.value,
     completed: false,
   });
 
@@ -97,6 +107,7 @@ const addTask = () => {
   taskName.value = "";
   taskDescription.value = "";
   selectedUrgency.value = null;
+  taskEndDate.value = "";
 };
 const handleClose = () => {
   emit("close-form");
