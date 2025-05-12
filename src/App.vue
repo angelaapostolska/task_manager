@@ -31,13 +31,23 @@ provide("updateTask", updateTask);
   display: flex;
   flex-direction: column;
   height: 100%;
-  position: relative;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   overflow: hidden;
 }
-.main-container > {
-  flex-grow: 1;
-  overflow-y: auto;
+
+.v-main {
+  padding-top: 10px !important;
+  padding-left: 30px !important;
+}
+</style>
+
+<!-- ✅ global styles: for nuking global scroll -->
+<style>
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 </style>

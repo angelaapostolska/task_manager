@@ -1,5 +1,5 @@
 <template>
-  <v-card class="task-container elevation-3">
+  <v-card class="task-container elevation-3" color="grey-lighten-3">
     <h2 class="div-title ma-2 pa-2">Your Tasks</h2>
     <v-row dense no-gutters class="columns">
       <v-col cols="12" md="4">
@@ -92,10 +92,8 @@ const lowDone = computed(
   width: 100%;
   max-width: 1080px;
   min-height: 600px;
-  background-color: #eeeeef;
   padding: 2rem;
   margin: 1rem auto 0 auto; /* top: 1rem, sides: auto, bottom: 0 */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .div-title {
