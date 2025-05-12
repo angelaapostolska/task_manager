@@ -6,18 +6,52 @@
         <div class="header-row">
           <h3>Urgent</h3>
         </div>
-
         <!-- iterate and render tasks -->
+        <v-card
+          v-for="(task, index) in tasks.filter((t) => t.urgency === 'Urgent')"
+          :key="index"
+          class="ma-2 pa-2"
+          color="pink-lighten-4"
+        >
+          <div>
+            <strong>{{ task.name }}</strong>
+          </div>
+          <div>{{ task.description }}</div>
+        </v-card>
       </v-col>
       <v-col cols="12" md="4">
         <div class="header-row">
           <h3>Mid</h3>
         </div>
+        <v-card
+          v-for="(task, index) in tasks.filter((t) => t.urgency === 'Mid')"
+          :key="'mid-' + index"
+          class="ma-2 pa-2"
+          color="blue-lighten-4"
+        >
+          <div>
+            <strong>{{ task.name }}</strong>
+          </div>
+          <div>{{ task.description }}</div>
+        </v-card>
       </v-col>
       <v-col cols="12" md="4">
         <div class="header-row">
           <h3>Low</h3>
         </div>
+        <v-card
+          v-for="(task, index) in tasks.filter(
+            (t) => t.urgency === 'Least Urgent'
+          )"
+          :key="'low-' + index"
+          class="ma-2 pa-2"
+          color="green-lighten-4"
+        >
+          <div>
+            <strong>{{ task.name }}</strong>
+          </div>
+          <div>{{ task.description }}</div>
+        </v-card>
       </v-col>
     </v-row>
   </v-card>
@@ -25,8 +59,7 @@
 
 <script setup>
 import { useTasks } from "@/composables/useTasks";
-
-//
+const tasks = inject("tasks");
 </script>
 
 <style scoped>

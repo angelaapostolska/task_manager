@@ -77,17 +77,21 @@ const taskDescription = ref("");
 const selectedUrgency = ref(null);
 const urgencies = ["Urgent", "Mid", "Least Urgent"];
 
+const addTaskGlobal = inject("addTask");
+
 const addTask = () => {
   if (!taskName.value || !selectedUrgency.value) {
     return;
   }
 
-  emit("add-task", {
+  addTaskGlobal({
     name: taskName.value,
     urgency: selectedUrgency.value,
     description: taskDescription.value,
     completed: false,
   });
+
+  emit("add-task");
 
   // clear form
   taskName.value = "";

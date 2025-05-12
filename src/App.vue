@@ -14,11 +14,16 @@
 import { reactive, provide } from "vue";
 import Header from "./components/Header.vue";
 import SideBar from "./components/SideBar.vue";
+import { useTasks } from "./composables/useTasks";
 const formState = reactive({
   showForm: false,
 });
 
+const { tasks, addTask, updateTask } = useTasks();
 provide("formState", formState);
+provide("tasks", tasks);
+provide("addTask", addTask);
+provide("updateTask", updateTask);
 </script>
 
 <style scoped>
