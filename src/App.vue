@@ -11,18 +11,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { reactive, provide } from "vue";
 import Header from "./components/Header.vue";
 import SideBar from "./components/SideBar.vue";
+const formState = reactive({
+  showForm: false,
+});
 
-const drawer = ref(null);
+provide("formState", formState);
 </script>
 
-<script>
-export default {
-  data: () => ({ drawer: null }),
-};
-</script>
 <style scoped>
 .main-container {
   display: flex;

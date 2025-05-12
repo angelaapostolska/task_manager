@@ -34,13 +34,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { inject } from "vue";
 
-const emit = defineEmits(["show-form"]);
-const userName = ref("Jane Doe");
+const formState = inject("formState");
 
 const handleClick = () => {
-  emit("show-form");
+  formState.showForm = true;
 };
 </script>
 

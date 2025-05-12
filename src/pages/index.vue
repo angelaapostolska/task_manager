@@ -1,11 +1,7 @@
 <template>
   <!-- Task Form (Modal) -->
-  <v-dialog v-model="showForm" persistent>
-    <TaskForm
-      @add-task="handleTaskAdded"
-      @close-form="handleCloseForm"
-      :category="selectedCategory"
-    />
+  <v-dialog v-model="formState.showForm" persistent>
+    <TaskForm @add-task="handleTaskAdded" @close-form="handleCloseForm" />
   </v-dialog>
 
   <!-- Main Task Container -->
@@ -16,24 +12,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import Header from "@/components/Header.vue";
+import { inject } from "vue";
 import TaskForm from "@/components/TaskForm.vue";
-import TaskContainer from "@/components/TaskContainer.vue";
-import Sidebar from "@/components/SideBar.vue";
-const showForm = ref(false);
-const selectedCategory = ref(null);
 
-const handleShowForm = () => {
-  showForm.value = true;
-};
+const formState = inject("formState");
 
-const handleTaskAdded = (newTask) => {
-  showForm.value = false;
+const handleTaskAdded = () => {
+  formState.showForm = false;
 };
 
 const handleCloseForm = () => {
-  showForm.value = false;
+  formState.showForm = false;
 };
 </script>
 
