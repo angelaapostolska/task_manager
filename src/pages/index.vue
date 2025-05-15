@@ -36,10 +36,8 @@ const handleCloseForm = () => {
 
 <style scoped>
 .page-container {
-  padding: 0; /* nuke extra spacing */
-  margin: 0;
-  height: calc(100vh - 100px); /* 100px = your app bar height */
-  overflow-y: auto;
-  padding-right: 10px; /* optional: to prevent scrollbar overlap */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 </style>

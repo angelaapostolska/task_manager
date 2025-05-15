@@ -2,11 +2,15 @@
 <template>
   <v-app id="inspire">
     <SideBar />
+
     <v-app-bar height="100">
       <Header />
     </v-app-bar>
+
     <v-main class="main-container">
-      <router-view />
+      <div class="page-wrapper">
+        <router-view />
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -17,15 +21,9 @@ import SideBar from "@/components/SideBar.vue";
 </script>
 
 <style scoped>
-.main-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-.v-main {
-  padding-top: 10px !important;
-  padding-left: 30px !important;
+.page-wrapper {
+  max-width: 90vw;
+  margin: 0 auto;
+  width: 100%;
 }
 </style>

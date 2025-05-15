@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer class="sidebar" width="80">
+  <v-navigation-drawer class="sidebar" width="80" app permanent>
     <div class="sidebar-content">
       <!-- Profile Icon - Positioned at the top -->
       <v-btn
