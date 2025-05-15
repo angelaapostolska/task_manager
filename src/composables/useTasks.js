@@ -12,5 +12,26 @@ export function useTasks() {
     task.completed = !task.completed;
   };
 
-  return { tasks, addTask, updateTask };
+  const searchQuery = ref("");
+  const setSearchQuery = (query) => {
+    searchQuery.value = query;
+  };
+
+  const filteredTasks = computed(() =>
+    tasks.value.map((task) => ({
+      ...task,
+      matched:
+        searchQuery.value.length > 0 &&
+        task.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
+    }))
+  );
+
+  return {
+    tasks,
+    addTask,
+    updateTask,
+    searchQuery,
+    setSearchQuery,
+    filteredTasks,
+  };
 }

@@ -17,11 +17,14 @@ const formState = reactive({
   showForm: false,
 });
 
-const { tasks, addTask, updateTask } = useTasks();
+const { tasks, addTask, updateTask, filteredTasks, setSearchQuery } =
+  useTasks();
 provide("formState", formState);
 provide("tasks", tasks);
 provide("addTask", addTask);
 provide("updateTask", updateTask);
+provide("filteredTasks", filteredTasks);
+provide("setSearchQuery", setSearchQuery);
 </script>
 
 <!-- ✅ global styles: for nuking global scroll -->

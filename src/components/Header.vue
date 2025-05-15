@@ -29,17 +29,28 @@
       rounded="lg"
       max-width="348px"
       icon-color="white"
+      v-model="searchText"
+      @keydown="onEnter"
     ></v-text-field>
   </v-toolbar>
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { inject, ref } from "vue";
 
 const formState = inject("formState");
+const setSearchQuery = inject("setSearchQuery");
+const searchText = ref("");
 
 const handleClick = () => {
   formState.showForm = true;
+};
+
+//extract the entered search string and assign it to the search query in useTasks using the setter
+const onEnter = (event) => {
+  if (event.key === "Enter") {
+    setSearchQuery(searchText.value);
+  }
 };
 </script>
 

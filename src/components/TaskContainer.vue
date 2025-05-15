@@ -9,9 +9,12 @@
         </div>
         <!-- iterate and render tasks -->
         <TaskCard
-          v-for="(task, index) in tasks.filter((t) => t.urgency === 'Urgent')"
-          :key="index"
+          v-for="(task, index) in filteredTasks.filter(
+            (t) => t.urgency === 'Urgent'
+          )"
+          :key="task.id || index"
           :task="task"
+          :class="{ 'matched-task': task.matched }"
           class="ma-2 pa-2"
           color="pink-lighten-4"
         >
@@ -27,9 +30,12 @@
           <span>{{ midDone }}/{{ midTasks.length }}</span>
         </div>
         <TaskCard
-          v-for="(task, index) in tasks.filter((t) => t.urgency === 'Mid')"
-          :key="'mid-' + index"
+          v-for="(task, index) in filteredTasks.filter(
+            (t) => t.urgency === 'Mid'
+          )"
+          :key="task.id || index"
           :task="task"
+          :class="{ 'matched-task': task.matched }"
           class="ma-2 pa-2"
           color="blue-lighten-4"
         >
@@ -45,11 +51,12 @@
           <span>{{ lowDone }}/{{ lowTasks.length }}</span>
         </div>
         <TaskCard
-          v-for="(task, index) in tasks.filter(
+          v-for="(task, index) in filteredTasks.filter(
             (t) => t.urgency === 'Least Urgent'
           )"
-          :key="'low-' + index"
+          :key="task.id || index"
           :task="task"
+          :class="{ 'matched-task': task.matched }"
           class="ma-2 pa-2"
           color="green-lighten-4"
         >
@@ -64,23 +71,27 @@
 </template>
 
 <script setup>
-import { useTasks } from "@/composables/useTasks";
 import TaskCard from "./TaskCard.vue";
-const tasks = inject("tasks");
+import { inject, computed } from "vue";
+
+// const tasks = inject("tasks");
+const filteredTasks = inject("filteredTasks");
 
 const urgentTasks = computed(() =>
-  tasks.value.filter((t) => t.urgency === "Urgent")
+  filteredTasks.value.filter((t) => t.urgency === "Urgent")
 );
 const urgentDone = computed(
   () => urgentTasks.value.filter((t) => t.completed).length
 );
-const midTasks = computed(() => tasks.value.filter((t) => t.urgency === "Mid"));
+const midTasks = computed(() =>
+  filteredTasks.value.filter((t) => t.urgency === "Mid")
+);
 const midDone = computed(
   () => midTasks.value.filter((t) => t.completed).length
 );
 
 const lowTasks = computed(() =>
-  tasks.value.filter((t) => t.urgency === "Least Urgent")
+  filteredTasks.value.filter((t) => t.urgency === "Least Urgent")
 );
 const lowDone = computed(
   () => lowTasks.value.filter((t) => t.completed).length
@@ -117,5 +128,10 @@ const lowDone = computed(
   font-size: 20px;
   font-weight: 500;
   text-transform: uppercase;
+}
+.matched-task {
+  border: 2px solid #7e57c2;
+  box-shadow: 0 4px 10px rgba(49, 27, 146, 0.4);
+  transition: all 0.3s ease;
 }
 </style>
