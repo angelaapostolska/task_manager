@@ -75,18 +75,23 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
 const form = ref(false);
 const email = ref("");
 const password = ref("");
 const loading = ref(false);
+const auth = useAuthStore();
+const router = useRouter();
 
 const required = (v) => !!v || "Field is required";
 
 function onSubmit() {
-  if (!form.value) return;
-  loading.value = true;
-  setTimeout(() => (loading.value = false), 1500);
+  console.log(email.value + ", " + password.value);
+  auth.login(email.value, password.value, router).then(() => {
+    console.log(auth.getUser);
+  });
 }
 </script>
 <style scoped>

@@ -1,8 +1,2 @@
-// Utilities
-import { defineStore } from 'pinia'
-
-export const useAppStore = defineStore('app', {
-  state: () => ({
-    //
-  }),
-})
+export { useAuthStore } from "./auth";
+export { useUserStore } from "./user";
