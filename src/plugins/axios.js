@@ -14,7 +14,7 @@ const config = {
 const api = axios.create(config);
 
 export function setAuthToken(token) {
-  api.defaults.headers["access_token"] = token ? `Bearer ${token}` : null;
+  api.defaults.headers["Authorization"] = token ? `Bearer ${token}` : null;
 }
 
 export default api;

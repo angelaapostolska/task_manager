@@ -9,18 +9,15 @@
     @mouseleave="isHovered = false"
   >
     <v-card-title class="title d-flex align-center">
-      <input
-        v-model="task.completed"
-        type="checkbox"
-        @change="updateCompletionStatus"
-      >
+      <input type="checkbox" @change="onCheckboxChange" />
       <label
         class="ms-2 task-label"
         :class="{ 'line-through': task.completed }"
-      >{{ task.name }}</label>
+        >{{ task.title }}</label
+      >
     </v-card-title>
 
-    <!-- Sass message -->
+    <!--message -->
     <v-card-text v-if="sassMessage" class="sass-message">
       💬 {{ sassMessage }}
     </v-card-text>
@@ -28,7 +25,8 @@
     <v-card-text>{{ task.description }}</v-card-text>
 
     <v-card-text class="text-caption text-grey-darken-2 date-text">
-      End date: {{ task.endDate }}
+      <!-- End date: {{ task.end_date }} -->
+      End date: {{ task.end_date }}
     </v-card-text>
 
     <v-card-text v-if="showCountdown" class="text-red font-weight-bold">
@@ -43,94 +41,103 @@
 </template>
 
 <script setup>
-  import { onMounted, onUnmounted, ref } from 'vue'
-  import confetti from 'canvas-confetti'
+import { onMounted, onUnmounted, ref } from "vue";
+import confetti from "canvas-confetti";
 
-  const props = defineProps({
-    task: Object,
-  })
+const emit = defineEmits(["status-updated"]);
 
-  const countdown = ref('')
-  const showCountdown = ref(false)
-  const sassMessage = ref('')
-  const isHovered = ref(false)
-  let intervalId = null
+const props = defineProps({
+  task: Object,
+});
 
-  const sassMessages = [
-    "Look at you go! Don't slack off now.",
-    'Yasss queen, task slayed!',
-    'Did someone call a productivity god?',
-    'Keep it up, superstar!',
-    'Whoa, slow down! Just kidding, keep smashing it.',
-    'Is that a task or a masterpiece?',
-    'Who needs coffee when you’ve got skills like this?',
-    'Urgent? More like legendary.',
-  ]
+const countdown = ref("");
+const showCountdown = ref(false);
+const sassMessage = ref("");
+const isHovered = ref(false);
+let intervalId = null;
 
-  onMounted(() => {
-    if ('Notification' in window && Notification.permission !== 'granted') {
-      Notification.requestPermission()
-    }
+const sassMessages = [
+  "Look at you go! Don't slack off now.",
+  "Yasss queen, task slayed!",
+  "Did someone call a productivity god?",
+  "Keep it up, superstar!",
+  "Whoa, slow down! Just kidding, keep smashing it.",
+  "Is that a task or a masterpiece?",
+  "Who needs coffee when you’ve got skills like this?",
+  "Urgent? More like legendary.",
+];
 
-    checkTime()
-    intervalId = setInterval(checkTime, 1000)
-  })
+onMounted(() => {
+  if ("Notification" in window && Notification.permission !== "granted") {
+    Notification.requestPermission();
+  }
 
-  onUnmounted(() => {
-    clearInterval(intervalId)
-  })
+  checkTime();
+  intervalId = setInterval(checkTime, 1000);
+});
 
-  function checkTime () {
-    const now = new Date()
-    const end = new Date(props.task.endDate)
-    const diff = end - now
+onUnmounted(() => {
+  clearInterval(intervalId);
+});
 
-    if (diff <= 2 * 60 * 60 * 1000 && diff > 0 && !props.task.completed) {
-      if (Notification.permission === 'granted') {
-        new Notification('⚠️ Urgent task due in 2 hours!', {
-          body: props.task.name,
-        })
-      }
-    }
+function checkTime() {
+  const now = new Date();
+  const end = new Date(props.task.end_date);
+  const diff = end - now;
 
-    if (diff > 0 && diff <= 24 * 60 * 60 * 1000) {
-      showCountdown.value = true
-      const hours = Math.floor(diff / 3600000)
-      const minutes = Math.floor((diff % 3600000) / 60000)
-      const seconds = Math.floor((diff % 60000) / 1000)
-      countdown.value = `${hours}h ${minutes}m ${seconds}s`
+  if (diff <= 2 * 60 * 60 * 1000 && diff > 0 && !props.task.completed) {
+    if (Notification.permission === "granted") {
+      new Notification("⚠️ Urgent task due in 2 hours!", {
+        body: props.task.name,
+      });
     }
   }
 
-  const updateCompletionStatus = () => {
-    console.log(
-      `Task ${props.task.name} marked as ${
-        props.task.completed ? 'completed' : 'incomplete'
-      }`
-    )
+  if (diff > 0 && diff <= 24 * 60 * 60 * 1000) {
+    showCountdown.value = true;
+    const hours = Math.floor(diff / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+    countdown.value = `${hours}h ${minutes}m ${seconds}s`;
+  }
+}
 
-    // 🎉 Confetti magic
-    if (props.task.completed) {
-      confetti({
-        particleCount: 120,
-        spread: 80,
-        origin: { y: 0.6 },
-      })
+const onCheckboxChange = (event) => {
+  props.task.completed = event.target.checked;
+  updateCompletionStatus();
+};
 
-      // Show random sass message on completion
-      sassMessage.value = sassMessages[Math.floor(Math.random() * sassMessages.length)]
-    } else {
-      sassMessage.value = ''
-    }
+const updateCompletionStatus = () => {
+  console.log(
+    `Task ${props.task.name} marked as ${
+      props.task.completed ? "completed" : "incomplete"
+    }`
+  );
+
+  // Conffetti
+  if (props.task.completed) {
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      origin: { y: 0.6 },
+    });
+
+    sassMessage.value =
+      sassMessages[Math.floor(Math.random() * sassMessages.length)];
+  } else {
+    sassMessage.value = "";
   }
 
-  const openEditForm = () => {
-    console.log(`Editing task: ${props.task.name}`)
-  }
+  emit("status-updated");
+};
 
-  const deleteTask = () => {
-    console.log(`Deleted task: ${props.task.name}`)
-  }
+const openEditForm = () => {
+  console.log(`Editing task: ${props.task.name}`);
+};
+
+const deleteTask = () => {
+  console.log(`Deleted task: ${props.task.name}`);
+};
 </script>
 
 <style scoped>
@@ -152,14 +159,19 @@
   animation: wiggle 0.4s ease-in-out;
 }
 @keyframes wiggle {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
 }
 
 /* Sass message style */
 .sass-message {
   font-style: italic;
-  color: #7B1FA2; /* purple sass vibes */
+  color: #7b1fa2; /* purple sass vibes */
   margin-bottom: 6px;
   user-select: none;
   pointer-events: none;

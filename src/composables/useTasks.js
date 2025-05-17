@@ -1,24 +1,28 @@
-//will be used in TaskCard (yet to be implemented)
 import { ref } from "vue";
+import { useTasksStore } from "@/stores/tasks";
 
 export function useTasks() {
-  const tasks = ref([]);
+  //change the old reactive tasks list with the tasks list from our store
+  //containing tasks from the backend
+  // const tasks = ref([]);
+  const store = useTasksStore();
+  const searchQuery = ref("");
 
   const addTask = (task) => {
-    tasks.value.push(task);
+    console.log("add task method fired");
+    store.tasks.push(task);
   };
 
   const updateTask = (task) => {
     task.completed = !task.completed;
   };
 
-  const searchQuery = ref("");
   const setSearchQuery = (query) => {
     searchQuery.value = query;
   };
 
   const filteredTasks = computed(() =>
-    tasks.value.map((task) => ({
+    store.tasks.map((task) => ({
       ...task,
       matched:
         searchQuery.value.length > 0 &&
@@ -27,7 +31,7 @@ export function useTasks() {
   );
 
   return {
-    tasks,
+    tasks: store.tasks,
     addTask,
     updateTask,
     searchQuery,
