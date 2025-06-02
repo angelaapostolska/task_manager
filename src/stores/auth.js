@@ -27,7 +27,7 @@ export const useAuthStore = defineStore("auth", {
         this.user = response.data.user;
         setAuthToken(this.token);
         if (response.status == 200) {
-          router.push("/");
+          router.push("/home");
         }
       } catch (error) {
         // Error handling

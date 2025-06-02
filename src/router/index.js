@@ -15,6 +15,10 @@ import { components } from "vuetify/dist/vuetify.js";
 const routes = [
   {
     path: "/",
+    redirect: "/login",
+  },
+  {
+    path: "/home",
     name: "home",
     component: index,
     meta: { layout: "default" },

@@ -6,7 +6,7 @@
     </v-btn> -->
 
     <!-- Hello User Text -->
-    <v-toolbar-title class="hello-user">Hello {{ userName }}!</v-toolbar-title>
+    <v-toolbar-title class="hello-user">Hello, {{ userName }}!</v-toolbar-title>
 
     <v-spacer></v-spacer>
 
@@ -37,11 +37,24 @@
 
 <script setup>
 import { inject, ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { computed } from "vue";
 
 const formState = inject("formState");
 const setSearchQuery = inject("setSearchQuery");
 const searchText = ref("");
+const user = useAuthStore();
 
+const userName = computed(() => {
+  const email = user.user?.email;
+  if (!email) return "";
+
+  //extracting only the name
+  const name = email.split("@")[0].split(".")[0];
+
+  //capitalize first
+  return name;
+});
 const handleClick = () => {
   formState.showForm = true;
 };
