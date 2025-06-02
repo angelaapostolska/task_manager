@@ -35,7 +35,9 @@
 
     <v-card-actions>
       <v-btn color="black" @click="openEditForm">Edit</v-btn>
-      <v-btn color="deep-purple-darken-4" @click="deleteTask">Delete</v-btn>
+      <v-btn color="deep-purple-darken-4" @click="handleDelete(task.id)"
+        >Delete</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -43,8 +45,10 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
 import confetti from "canvas-confetti";
+import { useTasks } from "@/composables/useTasks";
 
 const emit = defineEmits(["status-updated"]);
+const { deleteTask } = useTasks();
 
 const props = defineProps({
   task: Object,
@@ -132,11 +136,11 @@ const updateCompletionStatus = () => {
 };
 
 const openEditForm = () => {
-  console.log(`Editing task: ${props.task.name}`);
+  //implement this!
 };
 
-const deleteTask = () => {
-  console.log(`Deleted task: ${props.task.name}`);
+const handleDelete = async (taskId) => {
+  await deleteTask(taskId);
 };
 </script>
 

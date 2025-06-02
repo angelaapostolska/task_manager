@@ -24,5 +24,35 @@ export const useTasksStore = defineStore("tasks", {
         this.isLoading = false;
       }
     },
+    async createTask(newTaskData) {
+      try {
+        const response = await _axios.post("/tasks", newTaskData);
+        this.tasks.push(response.data.data);
+        console.log("Task created successfully!");
+      } catch (err) {
+        console.error("Failed to create task: ", err);
+      }
+    },
+    async editTask(taskId, updatedTaskData) {
+      try {
+        const response = await _axios.put(`/tasks/${taskId}`, updatedTaskData);
+        const index = this.tasks.findIndex((t) => t.id === taskId);
+        if (index !== -1) {
+          this.tasks[index] = response.data.data;
+        }
+        console.log("Task updated successfully!");
+      } catch (err) {
+        console.error("Failed to update task: ", err);
+      }
+    },
+    async deleteTask(taskId) {
+      try {
+        await _axios.delete(`/tasks/${taskId}`);
+        this.tasks = this.tasks.filter((t) => t.id !== taskId);
+        console.log("Task deleted successfully!");
+      } catch (err) {
+        console.error("Failed to delete task: ", err);
+      }
+    },
   },
 });

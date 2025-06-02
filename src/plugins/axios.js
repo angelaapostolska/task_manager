@@ -17,4 +17,8 @@ export function setAuthToken(token) {
   api.defaults.headers["Authorization"] = token ? `Bearer ${token}` : null;
 }
 
+const token = localStorage.getItem("access_token");
+if (token) {
+  setAuthToken(token);
+}
 export default api;

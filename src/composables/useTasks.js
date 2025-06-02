@@ -8,13 +8,16 @@ export function useTasks() {
   const store = useTasksStore();
   const searchQuery = ref("");
 
-  const addTask = (task) => {
-    console.log("add task method fired");
-    store.tasks.push(task);
+  const addTask = async (newTask) => {
+    await store.createTask(newTask);
   };
 
-  const updateTask = (task) => {
-    task.completed = !task.completed;
+  const updateTask = async (taskId, updatedTask) => {
+    await store.updateTask(taskId, updatedTask);
+  };
+
+  const deleteTask = async (taskId) => {
+    await store.deleteTask(taskId);
   };
 
   const setSearchQuery = (query) => {
@@ -34,6 +37,7 @@ export function useTasks() {
     tasks: store.tasks,
     addTask,
     updateTask,
+    deleteTask,
     searchQuery,
     setSearchQuery,
     filteredTasks,

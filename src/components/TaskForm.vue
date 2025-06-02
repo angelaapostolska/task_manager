@@ -31,7 +31,7 @@
 
       <!-- Right side form -->
       <v-col cols="12" md="6">
-        <v-form @submit.prevent="addTask">
+        <v-form @submit.prevent="addTaskHandler">
           <v-text-field
             v-model="taskName"
             label="Task Name"
@@ -73,6 +73,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { useTasks } from "@/composables/useTasks";
 
 defineProps({
   category: String,
@@ -83,27 +84,26 @@ const emit = defineEmits(["add-task", "close-form"]);
 const taskName = ref("");
 const taskDescription = ref("");
 const selectedUrgency = ref(null);
-const urgencies = ["Urgent", "Mid", "Least Urgent"];
+const urgencies = ["urgent", "mid", "least urgent"];
 const taskEndDate = ref("");
 
-const addTaskGlobal = inject("addTask");
+// const addTaskGlobal = inject("addTask");
+const { addTask } = useTasks();
 
-const addTask = () => {
-  if (!taskName.value || !selectedUrgency.value) {
-    return;
-  }
+const addTaskHandler = async () => {
+  if (!taskName.value || !selectedUrgency.value) return;
 
-  addTaskGlobal({
-    name: taskName.value,
-    urgency: selectedUrgency.value,
+  await addTask({
+    title: taskName.value,
+    category: selectedUrgency.value,
     description: taskDescription.value,
-    endDate: taskEndDate.value,
-    completed: false,
+    end_date: taskEndDate.value,
+    state: "pending",
   });
 
+  //check whether you need this in the parent??
   emit("add-task");
 
-  // clear form
   taskName.value = "";
   taskDescription.value = "";
   selectedUrgency.value = null;
