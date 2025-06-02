@@ -15,14 +15,15 @@ const layout = route.meta.layout || "default";
 
 const formState = reactive({
   showForm: false,
+  showEditForm: false,
+  taskToEdit: null,
 });
 
-const { tasks, addTask, updateTask, filteredTasks, setSearchQuery } =
-  useTasks();
+const { tasks, addTask, editTask, filteredTasks, setSearchQuery } = useTasks();
 provide("formState", formState);
 provide("tasks", tasks);
 provide("addTask", addTask);
-provide("updateTask", updateTask);
+provide("editTask", editTask);
 provide("filteredTasks", filteredTasks);
 provide("setSearchQuery", setSearchQuery);
 </script>

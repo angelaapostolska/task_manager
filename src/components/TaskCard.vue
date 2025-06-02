@@ -135,8 +135,11 @@ const updateCompletionStatus = () => {
   emit("status-updated");
 };
 
+const formState = inject("formState");
+
 const openEditForm = () => {
-  //implement this!
+  formState.taskToEdit = props.task;
+  formState.showEditForm = true;
 };
 
 const handleDelete = async (taskId) => {

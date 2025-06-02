@@ -12,8 +12,8 @@ export function useTasks() {
     await store.createTask(newTask);
   };
 
-  const updateTask = async (taskId, updatedTask) => {
-    await store.updateTask(taskId, updatedTask);
+  const editTask = async (taskId, updatedTask) => {
+    await store.editTask(taskId, updatedTask);
   };
 
   const deleteTask = async (taskId) => {
@@ -36,7 +36,7 @@ export function useTasks() {
   return {
     tasks: store.tasks,
     addTask,
-    updateTask,
+    editTask,
     deleteTask,
     searchQuery,
     setSearchQuery,
