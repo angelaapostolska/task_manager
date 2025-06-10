@@ -4,28 +4,28 @@
   </component>
 </template>
 <script setup>
-import { reactive, provide } from "vue";
-import Header from "./components/Header.vue";
-import SideBar from "./components/SideBar.vue";
-import { useTasks } from "./composables/useTasks";
-import { useRoute } from "vue-router";
+  import { provide, reactive } from 'vue';
+  import Header from './components/Header.vue';
+  import SideBar from './components/SideBar.vue';
+  import { useTasks } from './composables/useTasks';
+  import { useRoute } from 'vue-router';
 
-const route = useRoute();
-const layout = route.meta.layout || "default";
+  const route = useRoute();
+  const layout = route.meta.layout || 'default';
 
-const formState = reactive({
-  showForm: false,
-  showEditForm: false,
-  taskToEdit: null,
-});
+  const formState = reactive({
+    showForm: false,
+    showEditForm: false,
+    taskToEdit: null,
+  });
 
-const { tasks, addTask, editTask, filteredTasks, setSearchQuery } = useTasks();
-provide("formState", formState);
-provide("tasks", tasks);
-provide("addTask", addTask);
-provide("editTask", editTask);
-provide("filteredTasks", filteredTasks);
-provide("setSearchQuery", setSearchQuery);
+  const { tasks, addTask, editTask, filteredTasks, setSearchQuery } = useTasks();
+  provide('formState', formState);
+  provide('tasks', tasks);
+  provide('addTask', addTask);
+  provide('editTask', editTask);
+  provide('filteredTasks', filteredTasks);
+  provide('setSearchQuery', setSearchQuery);
 </script>
 
 <!-- ✅ global styles: for nuking global scroll -->

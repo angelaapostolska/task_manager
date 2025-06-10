@@ -1,5 +1,5 @@
 <template>
-  <v-card color="grey-lighten-3" elevation="3">
+  <v-card color="grey-lighten-3" elevation="3" class="progress-card">
     <v-card-title>Task Overview</v-card-title>
     <v-card-text>
       <div class="progress-list">
@@ -29,36 +29,46 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { inject, computed } from "vue";
 
-const progressData = ref([
-  {
-    name: "Urgent",
-    done: 3,
-    total: 5,
-    progress: 60,
-    color: "deep-purple",
-  },
-  {
-    name: "Mid",
-    done: 4,
-    total: 8,
-    progress: 50,
-    color: "deep-purple-lighten-2",
-  },
-  {
-    name: "Least Urgent",
-    done: 2,
-    total: 4,
-    progress: 50,
-    color: "deep-purple-lighten-4",
-  },
-]);
+const filteredTasks = inject("filteredTasks");
+
+// Define your categories with keys matching task.category values
+const categories = [
+  { name: "Urgent", key: "urgent", color: "deep-purple" },
+  { name: "Mid", key: "mid", color: "deep-purple-lighten-2" },
+  { name: "Least Urgent", key: "least urgent", color: "deep-purple-lighten-4" },
+];
+
+const progressData = computed(() => {
+  return categories.map(({ name, key, color }) => {
+    // Get all tasks in this category
+    const tasksInCategory = filteredTasks.value.filter(t => t.category === key);
+
+    // Count completed tasks — THIS triggers reactivity on completion changes
+    const doneCount = tasksInCategory.filter(t => t.completed).length;
+
+    const totalCount = tasksInCategory.length;
+
+    // Calculate progress %
+    const progress = totalCount === 0 ? 0 : Math.round((doneCount / totalCount) * 100);
+
+    return {
+      name,
+      done: doneCount,
+      total: totalCount,
+      progress,
+      color,
+    };
+  });
+});
 </script>
+
 <style scoped>
-.v-card {
+.progress-card {
   padding: 2rem;
-  margin: 1rem auto 0 auto; /* top: 1rem, sides: auto, bottom: 0 */
+  margin: 1rem auto 0 auto;
+  max-width: 1080px; /* same width as your TaskContainer */
 }
 .v-card-title {
   font-family: "Playfair Display", serif;
@@ -71,7 +81,9 @@ const progressData = ref([
   flex-direction: column;
 }
 .progress-item {
-  margin-bottom: 1rem; /* space between each circle row */
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
 }
 .text-info {
   margin-left: 1rem;
@@ -83,3 +95,4 @@ const progressData = ref([
   color: #616161;
 }
 </style>
+
