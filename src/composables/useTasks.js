@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useTasksStore } from "@/stores/tasks";
 
 export function useTasks() {
@@ -20,6 +20,9 @@ export function useTasks() {
     await store.deleteTask(taskId);
   };
 
+  const markTaskCompleted = async (taskId) => {
+    await store.markTaskCompleted(taskId);
+  };
   const setSearchQuery = (query) => {
     searchQuery.value = query;
   };
@@ -41,5 +44,6 @@ export function useTasks() {
     searchQuery,
     setSearchQuery,
     filteredTasks,
+    markTaskCompleted,
   };
 }

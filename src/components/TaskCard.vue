@@ -4,16 +4,21 @@
     elevation="12"
     hover
     max-width="400"
-    :variant="task.completed ? 'plain' : 'elevated'"
+    :variant="task.state === 'completed' ? 'plain' : 'elevated'"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
     <v-card-title class="title d-flex align-center">
-      <input type="checkbox" @change="onCheckboxChange">
+      <input
+        type="checkbox"
+        :checked="task.state === 'completed'"
+        @change="onCheckboxChange"
+      />
       <label
         class="ms-2 task-label"
-        :class="{ 'line-through': task.completed }"
-      >{{ task.title }}</label>
+        :class="{ 'line-through': task.state === 'completed' }"
+        >{{ task.title }}</label
+      >
     </v-card-title>
 
     <!--message -->
@@ -34,117 +39,129 @@
 
     <v-card-actions>
       <v-btn color="black" @click="openEditForm">Edit</v-btn>
-      <v-btn
-        color="deep-purple-darken-4"
-        @click="handleDelete(task.id)"
-      >Delete</v-btn>
+      <v-btn color="deep-purple-darken-4" @click="handleDelete(task.id)"
+        >Delete</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
 
 <script setup>
-  import { onMounted, onUnmounted, ref } from 'vue';
-  import confetti from 'canvas-confetti';
-  import { useTasks } from '@/composables/useTasks';
+import { onMounted, onUnmounted, ref } from "vue";
+import confetti from "canvas-confetti";
+import { useTasks } from "@/composables/useTasks";
 
-  const emit = defineEmits(['status-updated']);
-  const { deleteTask } = useTasks();
+const emit = defineEmits(["status-updated"]);
+const { deleteTask, markTaskCompleted } = useTasks();
 
-  const props = defineProps({
-    task: Object,
-  });
+const props = defineProps({
+  task: Object,
+});
 
-  const countdown = ref('');
-  const showCountdown = ref(false);
-  const sassMessage = ref('');
-  const isHovered = ref(false);
-  let intervalId = null;
+const countdown = ref("");
+const showCountdown = ref(false);
+const sassMessage = ref("");
+const isHovered = ref(false);
+let intervalId = null;
 
-  const sassMessages = [
-    "Look at you go! Don't slack off now.",
-    'Yasss queen, task slayed!',
-    'Did someone call a productivity god?',
-    'Keep it up, superstar!',
-    'Whoa, slow down! Just kidding, keep smashing it.',
-    'Is that a task or a masterpiece?',
-    'Who needs coffee when you’ve got skills like this?',
-    'Urgent? More like legendary.',
-  ];
+const sassMessages = [
+  "Look at you go! Don't slack off now.",
+  "Yasss queen, task slayed!",
+  "Did someone call a productivity god?",
+  "Keep it up, superstar!",
+  "Whoa, slow down! Just kidding, keep smashing it.",
+  "Is that a task or a masterpiece?",
+  "Who needs coffee when you’ve got skills like this?",
+  "Urgent? More like legendary.",
+];
 
-  onMounted(() => {
-    if ('Notification' in window && Notification.permission !== 'granted') {
-      Notification.requestPermission();
-    }
+onMounted(() => {
+  if ("Notification" in window && Notification.permission !== "granted") {
+    Notification.requestPermission();
+  }
 
-    checkTime();
-    intervalId = setInterval(checkTime, 1000);
-  });
+  checkTime();
+  intervalId = setInterval(checkTime, 1000);
+});
 
-  onUnmounted(() => {
-    clearInterval(intervalId);
-  });
+onUnmounted(() => {
+  clearInterval(intervalId);
+});
 
-  function checkTime () {
-    const now = new Date();
-    const end = new Date(props.task.end_date);
-    const diff = end - now;
+function checkTime() {
+  const now = new Date();
+  const end = new Date(props.task.end_date);
+  const diff = end - now;
 
-    if (diff <= 2 * 60 * 60 * 1000 && diff > 0 && !props.task.completed) {
-      if (Notification.permission === 'granted') {
-        new Notification('⚠️ Urgent task due in 2 hours!', {
-          body: props.task.name,
-        });
-      }
-    }
-
-    if (diff > 0 && diff <= 24 * 60 * 60 * 1000) {
-      showCountdown.value = true;
-      const hours = Math.floor(diff / 3600000);
-      const minutes = Math.floor((diff % 3600000) / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
-      countdown.value = `${hours}h ${minutes}m ${seconds}s`;
+  if (
+    diff <= 2 * 60 * 60 * 1000 &&
+    diff > 0 &&
+    props.task.state !== "completed"
+  ) {
+    if (Notification.permission === "granted") {
+      new Notification("⚠️ Urgent task due in 2 hours!", {
+        body: props.task.title,
+      });
     }
   }
 
-  const onCheckboxChange = event => {
-    props.task.completed = event.target.checked;
-    updateCompletionStatus();
-  };
+  if (diff > 0 && diff <= 24 * 60 * 60 * 1000) {
+    showCountdown.value = true;
+    const hours = Math.floor(diff / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+    countdown.value = `${hours}h ${minutes}m ${seconds}s`;
+  } else {
+    showCountdown.value = false; // Hide countdown if completed or past due
+  }
+}
 
-  const updateCompletionStatus = () => {
-    console.log(
-      `Task ${props.task.name} marked as ${
-        props.task.completed ? 'completed' : 'incomplete'
-      }`
-    );
+const onCheckboxChange = async (event) => {
+  console.log("Checked task is: ", props.task);
+  console.log("ID: ", props.task.id);
 
-    // Conffetti
-    if (props.task.completed) {
-      confetti({
-        particleCount: 120,
-        spread: 80,
-        origin: { y: 0.6 },
-      });
+  props.task.completed = event.target.checked;
+  if (event.target.checked) {
+    await markTaskCompleted(props.task.id);
+  }
 
-      sassMessage.value =
-        sassMessages[Math.floor(Math.random() * sassMessages.length)];
-    } else {
-      sassMessage.value = '';
-    }
+  updateCompletionStatus();
+};
 
-    emit('status-updated', props.task);
-  };
+const updateCompletionStatus = () => {
+  console.log(
+    `Task ${props.task.title} marked as ${
+      props.task.state === "completed" ? "completed" : "incomplete"
+    }`
+  );
 
-  const formState = inject('formState');
+  // Conffetti
+  if (props.task.state === "completed") {
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      origin: { y: 0.6 },
+    });
 
-  const openEditForm = () => {
-    formState.taskToEdit = props.task;
-    formState.showEditForm = true;
-  };
+    sassMessage.value =
+      sassMessages[Math.floor(Math.random() * sassMessages.length)];
+  } else {
+    sassMessage.value = "";
+  }
 
-  const handleDelete = async taskId => {
-    await deleteTask(taskId);
-  };
+  emit("status-updated", props.task);
+};
+
+const formState = inject("formState");
+
+const openEditForm = () => {
+  formState.taskToEdit = props.task;
+  formState.showEditForm = true;
+};
+
+const handleDelete = async (taskId) => {
+  await deleteTask(taskId);
+};
 </script>
 
 <style scoped>

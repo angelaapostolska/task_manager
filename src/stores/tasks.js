@@ -54,5 +54,15 @@ export const useTasksStore = defineStore("tasks", {
         console.error("Failed to delete task: ", err);
       }
     },
+    async markTaskCompleted(taskId) {
+      try {
+        await _axios.patch(`/tasks/${taskId}/completeTask`);
+        const task = this.tasks.find((t) => t.id === taskId);
+        if (task) task.state = "completed";
+        console.log("Task marked completed with backend");
+      } catch (err) {
+        console.error("Failed to mark task as completed:", err);
+      }
+    },
   },
 });
