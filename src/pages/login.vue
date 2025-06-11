@@ -64,19 +64,36 @@
               color="deep-purple-darken-2"
               size="large"
               variant="outlined"
+              @click="showRegisterModal = true"
             >
-              Continue with Google
+              Create an account
             </v-btn>
           </v-form>
         </v-sheet>
       </v-container>
     </v-main>
+
+    <v-dialog v-model="showRegisterModal" max-width="600px">
+      <v-card>
+        <v-toolbar color="deep-purple-lighten-1" dark>
+          <v-toolbar-title>Create New Account</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="showRegisterModal = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-card-text class="pa-4">
+          <RegisterForm @registered="handleRegistrationSuccess"></RegisterForm>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+import RegisterForm from "@/components/RegisterForm.vue";
 
 const form = ref(false);
 const email = ref("");
@@ -85,15 +102,36 @@ const loading = ref(false);
 const auth = useAuthStore();
 const router = useRouter();
 
+//controlling the visibility of a modal
+const showRegisterModal = ref(false);
+
 const required = (v) => !!v || "Field is required";
 
-function onSubmit() {
-  console.log(email.value + ", " + password.value);
-  auth.login(email.value, password.value, router).then(() => {
-    console.log(auth.getUser);
-  });
+async function onSubmit() {
+  loading.value = true;
+  try {
+    await auth.login(email.value, password.value, router);
+  } catch (error) {
+    console.error("Login failed. ", auth.error);
+  } finally {
+    loading.value = false;
+  }
 }
+// function onSubmit() {
+//   console.log(email.value + ", " + password.value);
+//   auth.login(email.value, password.value, router).then(() => {
+//     console.log(auth.getUser);
+//   });
+// }
+
+const handleRegistrationSuccess = () => {
+  showRegisterModal.value = false;
+  alert("Account created successsfuly! You can now log in");
+  email.value = "";
+  password.value = "";
+};
 </script>
+
 <style scoped>
 .login-background {
   /* background: linear-gradient(135deg, #f3d9fa, #dbeafe); */
