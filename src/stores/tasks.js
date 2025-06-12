@@ -12,7 +12,7 @@ export const useTasksStore = defineStore("tasks", {
     async fetchTasks() {
       this.isLoading = true;
       try {
-        const response = await _axios.get("/tasks");
+        const response = await _axios.get("/myTasks");
         // If successful
         this.tasks = response.data.data;
         console.log("Successfully fetched tasks: ", this.tasks.length);
