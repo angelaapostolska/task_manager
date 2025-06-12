@@ -21,7 +21,7 @@ const routes = [
     path: "/home",
     name: "home",
     component: index,
-    meta: { layout: "default" },
+    meta: { requiresAuth: true, layout: "default" },
   },
   {
     path: "/login",
@@ -48,6 +48,25 @@ router.onError((err, to) => {
     }
   } else {
     console.error(err);
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("access_token");
+  if (to.meta.requiresAuth) {
+    if (token) {
+      // User is authenticated, proceed to the route
+      next();
+    } else {
+      // User is not authenticated, redirect to login
+      next("/login");
+    }
+  } else {
+    if (token && (to.path === "/login" || to.path === "/")) {
+      next("/home");
+    } else {
+      next();
+    }
   }
 });
 

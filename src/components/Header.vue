@@ -48,13 +48,7 @@ const user = useAuthStore();
 const userName = computed(() => {
   const name = user.user?.name;
   if (!name) {
-    //extracting only the name
-    const email = email.split("@")[0].split(".")[0];
-    if (email) {
-      const namePart = email.split("@")[0].split(".")[0];
-      return namePart.charAt(0).toUpperCase() + namePart.slice(1);
-    }
-    return "User";
+    console.log("no name");
   }
   //capitalize first
   return name;
