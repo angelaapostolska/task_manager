@@ -102,12 +102,12 @@ export const useAuthStore = defineStore("auth", {
         return { success: false, error: this.error };
       }
     },
-  },
-  async getMe() {
-    const response = await api.post("/me");
-    this.user = response.data.user;
-    console.log(this.user);
+    async getMe() {
+      const response = await api.post("/me");
+      this.user = response.data.user;
+      console.log(this.user);
 
-    this.token = response.data.access_token; //storing the user's token in pinia state
+      this.token = response.data.access_token; //storing the user's token in pinia state
+    },
   },
 });
