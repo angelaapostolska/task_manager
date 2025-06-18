@@ -7,6 +7,7 @@
         class="sidebar-icon profile-icon"
         color="deep-purple-lighten-4"
         elevation="2"
+        @click="handleProfileClick"
       >
         <v-icon size="32" color="white">mdi-account-circle</v-icon>
       </v-btn>
@@ -27,7 +28,21 @@
 </template>
 
 <script setup>
-// No specific script needed unless dynamic functionality is required
+import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const handleProfileClick = async () => {
+  const result = await authStore.logout(router);
+
+  if (result) {
+    console.log("Successfully logged out from profile icon click!");
+  } else {
+    console.error("Logout failed: ", result.error);
+  }
+};
 </script>
 
 <style scoped>

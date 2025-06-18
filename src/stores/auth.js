@@ -75,13 +75,39 @@ export const useAuthStore = defineStore("auth", {
         return { success: false, error: this.error };
       }
     },
-    async logout(router) {},
-    async getMe() {
-      const response = await api.post("/me");
-      this.user = response.data.user;
-      console.log(this.user);
+    async logout(router) {
+      this.error = null;
+      try {
+        await api.post("/logout");
+        localStorage.removeItem("access_token");
 
-      this.token = response.data.access_token; //storing the user's token in pinia state
+        // this.token = null;
+        // this.user = null;
+        // setAuthToken(null);
+
+        if (router) {
+          router.push("/login");
+        }
+        return { success: true, message: "Logged out successfully!" };
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.code === "ERR_NETWORK") {
+          this.error =
+            "Network Error during logout. Please check your internet connection.";
+        } else if (error.response && error.response.data) {
+          this.error = error.response.data.message || "Logout failed.";
+        } else {
+          this.error = "An unexpected error occurred during logout.";
+        }
+        console.error("Logout error:", error);
+        return { success: false, error: this.error };
+      }
     },
+  },
+  async getMe() {
+    const response = await api.post("/me");
+    this.user = response.data.user;
+    console.log(this.user);
+
+    this.token = response.data.access_token; //storing the user's token in pinia state
   },
 });
