@@ -8,7 +8,7 @@
 import { createRouter, createWebHistory } from "vue-router/auto";
 import { setupLayouts } from "virtual:generated-layouts";
 //import { routes } from "vue-router/auto-routes";
-import index from "@/pages/index.vue";
+import index from "@/pages/tasks.vue";
 import login from "@/pages/login.vue";
 import { components } from "vuetify/dist/vuetify.js";
 
