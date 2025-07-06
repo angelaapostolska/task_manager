@@ -27,6 +27,15 @@ export function useTasks() {
     searchQuery.value = query;
   };
 
+  //new implementation
+  const fetchTasksByBoard = async (boardId) => {
+    await store.fetchTodayStats();
+  };
+
+  const fetchTodayStats = async () => {
+    await store.fetchTodayStats();
+  };
+
   const filteredTasks = computed(() =>
     store.tasks.map((task) => ({
       ...task,
@@ -45,5 +54,7 @@ export function useTasks() {
     setSearchQuery,
     filteredTasks,
     markTaskCompleted,
+    fetchTasksByBoard,
+    fetchTodayStats,
   };
 }

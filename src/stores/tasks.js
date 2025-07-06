@@ -6,6 +6,11 @@ export const useTasksStore = defineStore("tasks", {
   state: () => ({
     tasks: [],
     isLoading: false,
+    stats: {
+      totalTasksToday: 0,
+      completedTasksToday: 0,
+      percentage: 0,
+    },
   }),
   getters: {},
   actions: {
@@ -22,6 +27,29 @@ export const useTasksStore = defineStore("tasks", {
         console.error("Failed to fetch tasks: ", err);
       } finally {
         this.isLoading = false;
+      }
+    },
+    //fetch tasks by board (new implementation)
+    async fetchTasksByBoard(boardId) {
+      this.isLoading = true;
+      try {
+        const response = await _axios.get(`/myTasks/byBoard/${boardId}`);
+        this.tasks = response.data.data;
+        console.log(`Fetched tasks for board ${boardId}: `, this.tasks.length);
+      } catch (err) {
+        console.error("Failed to fetch tasks by board: ", err);
+      } finally {
+        this.loading = false;
+      }
+    },
+    //fetch daily accomplishments stats
+    async fetchTodayStats() {
+      try {
+        const response = await _axios.get("/myTasks/todayStats");
+        this.stats = response.data;
+        console.log("Fetched today's stats", this.stats);
+      } catch (err) {
+        console.error("Failed to fetch stats: ", err);
       }
     },
     async createTask(newTaskData) {
