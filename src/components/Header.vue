@@ -1,76 +1,64 @@
+<!-- src/components/Header.vue -->
 <template>
-  <v-toolbar flat color="white">
-    <!-- Profile Icon -->
-    <!-- <v-btn icon class="profile-icon">
-      <v-icon size="32" color="purple-lighten-4">mdi-account-circle</v-icon>
-    </v-btn> -->
+  <v-toolbar flat class="header-toolbar">
+    <!-- Welcome Text -->
+    <div>
+      <div class="text-caption text-grey-darken-1">Welcome back,</div>
+      <div class="text-h6 font-weight-bold">Jane Doe</div>
+    </div>
 
-    <!-- Hello User Text -->
-    <v-toolbar-title class="hello-user">Hello, {{ userName }}!</v-toolbar-title>
+    <v-spacer />
 
-    <v-spacer></v-spacer>
-
-    <!-- Add Task (+) Button FIRST -->
-    <v-btn icon class="plus-icon" @click="handleClick">
-      <v-icon size="32" color="deep-purple-lighten-4">mdi-plus-circle</v-icon>
-    </v-btn>
-
-    <!-- Then Search Bar -->
+    <!-- Search Bar -->
     <v-text-field
-      class="white-placeholder"
-      density="comfortable"
-      variant="solo"
-      flat
-      placeholder="Search.."
+      v-model="search"
+      placeholder="Search your tasks..."
       prepend-inner-icon="mdi-magnify"
       hide-details
-      single-line
-      bg-color="deep-purple-lighten-5"
-      rounded="lg"
-      max-width="348px"
-      icon-color="white"
-      v-model="searchText"
-      @keydown="onEnter"
-    ></v-text-field>
+      variant="solo"
+      class="search-bar"
+    />
+
+    <!-- Icon Buttons -->
+    <v-btn
+      icon
+      class="mx-2 rounded-pill icon-button"
+      :style="{ backgroundColor: '#7C4DFF' }"
+    >
+      <v-icon color="white">mdi-view-dashboard-outline</v-icon>
+    </v-btn>
+
+    <v-btn
+      icon
+      class="rounded-pill icon-button"
+      :style="{ backgroundColor: '#F06292' }"
+    >
+      <v-icon color="white">mdi-plus</v-icon>
+    </v-btn>
   </v-toolbar>
 </template>
 
 <script setup>
-import { inject, ref } from "vue";
-import { useAuthStore } from "@/stores/auth";
-import { computed } from "vue";
-
-const formState = inject("formState");
-const setSearchQuery = inject("setSearchQuery");
-const searchText = ref("");
-const user = useAuthStore();
-
-const userName = computed(() => {
-  const name = user.user?.name;
-  if (!name) {
-    console.log("no name");
-  }
-  //capitalize first
-  return name;
-});
-const handleClick = () => {
-  formState.showForm = true;
-};
-
-//extract the entered search string and assign it to the search query in useTasks using the setter
-const onEnter = (event) => {
-  if (event.key === "Enter") {
-    setSearchQuery(searchText.value);
-  }
-};
+import { ref } from "vue";
+const search = ref("");
 </script>
 
 <style scoped>
-.hello-user {
-  color: #49484a;
-  font-family: "Playfair Display", serif;
-  font-size: 28px;
-  font-weight: 600;
-  margin-left: 8px;
+.header-toolbar {
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+}
+
+.search-bar {
+  max-width: 350px;
+  margin-right: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.icon-button {
+  width: 48px;
+  height: 48px;
 }
 </style>

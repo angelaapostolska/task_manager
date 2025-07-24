@@ -1,104 +1,119 @@
+<!-- src/components/SideBar.vue -->
 <template>
-  <v-navigation-drawer class="sidebar" width="80" app permanent>
-    <div class="sidebar-content">
-      <!-- Profile Icon - Positioned at the top -->
-      <v-btn
-        icon
-        class="sidebar-icon profile-icon"
-        color="deep-purple-lighten-4"
-        elevation="2"
-        @click="handleProfileClick"
+  <v-navigation-drawer permanent width="260" class="sidebar-gradient" app>
+    <div class="pa-4 text-center">
+      <v-avatar size="56" class="mx-auto mb-2 gradient-avatar">
+        <span class="text-white text-h6 font-weight-bold">JD</span>
+      </v-avatar>
+      <div class="text-white font-weight-medium">Jane Doe</div>
+      <div class="text-white text-caption">jane.doe@email.com</div>
+    </div>
+
+    <v-list dense nav>
+      <v-list-item
+        v-for="(item, i) in navItems"
+        :key="i"
+        :title="item.title"
+        :active="selected === item.title"
+        @click="selected = item.title"
+        class="nav-item"
       >
-        <v-icon size="32" color="white">mdi-account-circle</v-icon>
-      </v-btn>
+        <template #prepend>
+          <div class="custom-icon-box">
+            <v-icon size="18">{{ item.icon }}</v-icon>
+          </div>
+        </template>
 
-      <div class="bottom-icons">
-        <!-- Question Icon - Positioned at the bottom -->
-        <v-btn icon class="sidebar-icon" color="deep-purple-lighten-4">
-          <v-icon size="32" color="white">mdi-help-circle</v-icon>
-        </v-btn>
+        <template #append>
+          <v-badge
+            v-if="item.title === 'Tasks' && selected === 'Tasks'"
+            :content="16"
+            color="white"
+            text-color="primary"
+            inline
+            size="small"
+          />
+        </template>
+      </v-list-item>
+    </v-list>
 
-        <!-- Settings Icon - Positioned at the bottom -->
-        <v-btn icon class="sidebar-icon" color="deep-purple-lighten-4">
-          <v-icon size="32" color="white">mdi-cog-box</v-icon>
-        </v-btn>
-      </div>
+    <v-spacer />
+
+    <div class="pa-4">
+      <div class="text-white text-subtitle-2 mb-2">Daily Progress</div>
+      <v-progress-linear
+        :model-value="63"
+        color="cyan"
+        height="8"
+        rounded
+        class="mb-1"
+      />
+      <div class="text-white text-caption">63% completed</div>
     </div>
   </v-navigation-drawer>
 </template>
 
 <script setup>
-import { useAuthStore } from "@/stores/auth";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
 
-const authStore = useAuthStore();
-const router = useRouter();
+const selected = ref("Tasks");
 
-const handleProfileClick = async () => {
-  const result = await authStore.logout(router);
-
-  if (result) {
-    console.log("Successfully logged out from profile icon click!");
-  } else {
-    console.error("Logout failed: ", result.error);
-  }
-};
+const navItems = [
+  { title: "Tasks", icon: "mdi-clipboard-text-outline" },
+  { title: "Boards", icon: "mdi-view-dashboard-outline" },
+  { title: "Statistics", icon: "mdi-chart-bar" },
+  { title: "Calendar", icon: "mdi-calendar-month-outline" },
+];
 </script>
 
 <style scoped>
-/* Sidebar Styles */
-.sidebar {
-  background-image: url("../assets/sidebar-bg.png");
-  background-size: cover;
-  background-position: center;
-  max-width: 80px;
+.sidebar-gradient {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  color: white;
   height: 100vh;
-
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.sidebar-gradient > .v-navigation-drawer__content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.gradient-avatar {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  border: 5px solid white;
+  display: flex;
   align-items: center;
+  justify-content: center;
+}
+.nav-item {
+  border-radius: 12px;
+  margin: 6px 12px;
+  padding-inline: 8px;
 }
 
-/* Container for all sidebar content */
-.sidebar-content {
+.v-list-item--active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 13px;
+  z-index: 1;
+}
+
+.custom-icon-box {
+  background-color: white;
+  border-radius: 6px;
+  padding: 4px;
+  width: 26px;
+  height: 26px;
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding-top: 20px; /* spacing from top */
-  padding-bottom: 10px; /* spacing at bottom */
-}
-
-/* Profile icon stays at top */
-.profile-icon {
-  margin-bottom: auto; /* pushes everything else to the bottom */
-  margin-top: 5px;
-}
-
-/* Bottom icons are pinned at the bottom */
-.bottom-icons {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px; /* space between help & settings */
+  justify-content: center;
+  margin-right: 12px;
 }
 
-/* Icon button styles */
-.sidebar-icon {
-  border-radius: 50%;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  transition: transform 0.2s ease-in-out;
-  width: 50px;
-  height: 50px;
-}
-
-/* Icon hover effect */
-.sidebar-icon:hover {
-  transform: scale(1.05);
-}
-
-/* Customize icon size */
-.sidebar-icon .v-icon {
-  font-size: 30px;
+.custom-icon-box .v-icon {
+  color: #434343;
 }
 </style>
