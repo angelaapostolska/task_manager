@@ -36,6 +36,8 @@ export function useTasks() {
     await store.fetchTodayStats();
   };
 
+  const todayStats = computed(() => store.todayStats);
+
   const filteredTasks = computed(() =>
     store.tasks.map((task) => ({
       ...task,
@@ -56,5 +58,6 @@ export function useTasks() {
     markTaskCompleted,
     fetchTasksByBoard,
     fetchTodayStats,
+    todayStats,
   };
 }

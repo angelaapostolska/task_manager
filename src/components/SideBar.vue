@@ -30,7 +30,7 @@
           <template #append>
             <v-badge
               v-if="item.title === 'Tasks' && selected === 'Tasks'"
-              :content="16"
+              :content="todayStats.totalTasksToday"
               color="white"
               text-color="primary"
               inline
@@ -46,22 +46,28 @@
       <div class="pa-4">
         <div class="text-white text-subtitle-2 mb-2">Daily Progress</div>
         <v-progress-linear
-          :model-value="63"
+          :model-value="todayStats.percentage"
           color="cyan"
           height="8"
           rounded
           class="mb-1"
         />
-        <div class="text-white text-caption">63% completed</div>
+        <div class="text-white text-caption">
+          {{ todayStats.percentage }} completed
+        </div>
       </div>
     </div>
   </v-navigation-drawer>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useTasks } from "@/composables/useTasks";
 
 const selected = ref("Tasks");
+const { todayStats, fetchTodayStats } = useTasks();
+
+onMounted(() => fetchTodayStats());
 
 const navItems = [
   { title: "Tasks", icon: "mdi-clipboard-text-outline" },

@@ -6,7 +6,7 @@ export const useTasksStore = defineStore("tasks", {
   state: () => ({
     tasks: [],
     isLoading: false,
-    stats: {
+    todayStats: {
       totalTasksToday: 0,
       completedTasksToday: 0,
       percentage: 0,
