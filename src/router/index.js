@@ -19,9 +19,30 @@ const routes = [
   },
   {
     path: "/home",
-    name: "home",
-    component: index,
+    redirect: "/home/tasks",
     meta: { requiresAuth: true, layout: "default" },
+    children: [
+      {
+        path: "tasks",
+        name: "tasks",
+        component: () => import("@/pages/tasks.vue"),
+      },
+      {
+        path: "boards",
+        name: "boards",
+        component: () => import("@/pages/boards.vue"),
+      },
+      {
+        path: "statistics",
+        name: "statistics",
+        component: () => import("@/pages/statistics.vue"),
+      },
+      {
+        path: "calendar",
+        name: "calendar",
+        component: () => import("@/pages/calendar.vue"),
+      },
+    ],
   },
   {
     path: "/login",

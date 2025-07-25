@@ -18,8 +18,10 @@
           :key="i"
           :title="item.title"
           :active="selected === item.title"
+          :to="`/home/${item.title.toLowerCase()}`"
           @click="selected = item.title"
           class="nav-item"
+          router
         >
           <template #prepend>
             <div class="custom-icon-box">
