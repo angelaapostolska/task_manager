@@ -1,54 +1,59 @@
 <!-- src/components/SideBar.vue -->
 <template>
   <v-navigation-drawer permanent width="260" class="sidebar-gradient" app>
-    <div class="pa-4 text-center">
-      <v-avatar size="56" class="mx-auto mb-2 gradient-avatar">
-        <span class="text-white text-h6 font-weight-bold">JD</span>
-      </v-avatar>
-      <div class="text-white font-weight-medium">Jane Doe</div>
-      <div class="text-white text-caption">jane.doe@email.com</div>
-    </div>
+    <div class="sidebar-content">
+      <!-- avatar + name -->
+      <div class="pa-4 text-center">
+        <v-avatar size="56" class="mx-auto mb-2 gradient-avatar">
+          <span class="text-white text-h6 font-weight-bold">JD</span>
+        </v-avatar>
+        <div class="text-white font-weight-medium">Jane Doe</div>
+        <div class="text-white text-caption">jane.doe@email.com</div>
+      </div>
 
-    <v-list dense nav>
-      <v-list-item
-        v-for="(item, i) in navItems"
-        :key="i"
-        :title="item.title"
-        :active="selected === item.title"
-        @click="selected = item.title"
-        class="nav-item"
-      >
-        <template #prepend>
-          <div class="custom-icon-box">
-            <v-icon size="18">{{ item.icon }}</v-icon>
-          </div>
-        </template>
+      <!-- menu items -->
+      <v-list dense nav>
+        <v-list-item
+          v-for="(item, i) in navItems"
+          :key="i"
+          :title="item.title"
+          :active="selected === item.title"
+          @click="selected = item.title"
+          class="nav-item"
+        >
+          <template #prepend>
+            <div class="custom-icon-box">
+              <v-icon size="18">{{ item.icon }}</v-icon>
+            </div>
+          </template>
 
-        <template #append>
-          <v-badge
-            v-if="item.title === 'Tasks' && selected === 'Tasks'"
-            :content="16"
-            color="white"
-            text-color="primary"
-            inline
-            size="small"
-          />
-        </template>
-      </v-list-item>
-    </v-list>
+          <template #append>
+            <v-badge
+              v-if="item.title === 'Tasks' && selected === 'Tasks'"
+              :content="16"
+              color="white"
+              text-color="primary"
+              inline
+              size="small"
+            />
+          </template>
+        </v-list-item>
+      </v-list>
 
-    <v-spacer />
+      <v-spacer />
 
-    <div class="pa-4">
-      <div class="text-white text-subtitle-2 mb-2">Daily Progress</div>
-      <v-progress-linear
-        :model-value="63"
-        color="cyan"
-        height="8"
-        rounded
-        class="mb-1"
-      />
-      <div class="text-white text-caption">63% completed</div>
+      <!-- progress bar -->
+      <div class="pa-4">
+        <div class="text-white text-subtitle-2 mb-2">Daily Progress</div>
+        <v-progress-linear
+          :model-value="63"
+          color="cyan"
+          height="8"
+          rounded
+          class="mb-1"
+        />
+        <div class="text-white text-caption">63% completed</div>
+      </div>
     </div>
   </v-navigation-drawer>
 </template>
@@ -74,11 +79,11 @@ const navItems = [
   display: flex;
   flex-direction: column;
 }
-
-.sidebar-gradient > .v-navigation-drawer__content {
+.sidebar-content {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .gradient-avatar {

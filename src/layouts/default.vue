@@ -1,19 +1,22 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="home-layout">
     <!-- Sidebar (Left) -->
     <SideBar />
 
-    <!-- Header (Top) -->
-    <v-app-bar height="100" flat color="white" elevation="0" class="px-6">
-      <Header />
-    </v-app-bar>
+    <!-- Header + Main Content (Right) -->
+    <div class="right-side">
+      <!-- Header -->
+      <v-app-bar height="100" flat color="white" elevation="0" class="px-6">
+        <Header />
+      </v-app-bar>
 
-    <!-- Main Content Area -->
-    <v-main class="main-container">
-      <div class="page-wrapper">
-        <router-view />
-      </div>
-    </v-main>
+      <!-- Main Content Area -->
+      <v-main class="main-container">
+        <div class="page-wrapper">
+          <router-view />
+        </div>
+      </v-main>
+    </div>
   </v-app>
 </template>
 
@@ -22,18 +25,27 @@ import Header from "@/components/Header.vue";
 import SideBar from "@/components/SideBar.vue";
 </script>
 
-<style scoped>
+<style>
+#home-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+.right-side {
+  flex-grow: 1; /* will take the remaining space */
+  display: flex;
+  flex-direction: column; /* used to position the header at the top, main content at the bottom */
+  height: 100vh;
+  background-color: red;
+}
+.main-container {
+  flex-grow: 1;
+  overflow-y: auto;
+}
 .page-wrapper {
   max-width: 90vw;
   margin: 0 auto;
   width: 100%;
-}
-
-#inspire {
-  height: 100vh; /* full viewport height */
-  display: flex; /* flex container */
-  flex-direction: row; /* sidebar and main content side by side */
-  overflow: hidden; /* prevent unwanted scroll */
-  background-color: red;
 }
 </style>
