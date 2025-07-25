@@ -37,7 +37,6 @@ import SideBar from "@/components/SideBar.vue";
   display: flex;
   flex-direction: column; /* used to position the header at the top, main content at the bottom */
   height: 100vh;
-  background-color: red;
 }
 .main-container {
   flex-grow: 1;

@@ -5,10 +5,17 @@
       <!-- avatar + name -->
       <div class="pa-4 text-center">
         <v-avatar size="56" class="mx-auto mb-2 gradient-avatar">
-          <span class="text-white text-h6 font-weight-bold">JD</span>
+          <span class="text-white text-h6 font-weight-bold">{{
+            initials
+          }}</span>
         </v-avatar>
-        <div class="text-white font-weight-medium">Jane Doe</div>
-        <div class="text-white text-caption">jane.doe@email.com</div>
+        <div class="text-white font-weight-medium">{{ auth.user?.name }}</div>
+        <div
+          class="text-white text-caption text-center"
+          style="overflow-wrap: break-word"
+        >
+          {{ auth.user?.email }}
+        </div>
       </div>
 
       <!-- menu items -->
@@ -63,13 +70,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useTasks } from "@/composables/useTasks";
+import { useAuthStore } from "@/stores/auth";
 
+const auth = useAuthStore();
 const selected = ref("Tasks");
 const { todayStats, fetchTodayStats } = useTasks();
 
+const initials = computed(() => {
+  const fullName = auth.user?.name || "";
+  const parts = fullName.trim().split(" ");
+
+  const firstInitial = parts[0]?.charAt(0).toUpperCase() || "";
+  const lastInitial =
+    parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() : "";
+
+  return firstInitial + lastInitial;
+});
 onMounted(() => fetchTodayStats());
+onMounted(() => {
+  auth.getMe();
+});
 
 const navItems = [
   { title: "Tasks", icon: "mdi-clipboard-text-outline" },

@@ -3,8 +3,8 @@
   <v-toolbar flat class="header-toolbar">
     <!-- Welcome Text -->
     <div>
-      <div class="text-caption text-grey-darken-1">Welcome back,</div>
-      <div class="text-h6 font-weight-bold">Jane Doe</div>
+      <div class="text-body-1 text-grey-darken-1">Welcome back,</div>
+      <div class="text-h4 font-weight-bold">{{ auth.user?.name || "..." }}</div>
     </div>
 
     <v-spacer />
@@ -40,7 +40,14 @@
 
 <script setup>
 import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+
 const search = ref("");
+const auth = useAuthStore();
+
+onMounted(() => {
+  auth.getMe();
+});
 </script>
 
 <style scoped>
