@@ -15,22 +15,13 @@
   </v-dialog>
   <!-- scrollable div -->
   <div class="page-container">
-    <!-- Main Task Container -->
-    <v-row>
-      <v-col cols="8"> <TaskContainer @open-form="handleShowForm" /> </v-col>
-      <v-col cols="4">
-        <CalendarCard> </CalendarCard>
-        <ProgressOverviewCard></ProgressOverviewCard>
-      </v-col>
-    </v-row>
+    <TaskContainer @open-form="handleShowForm" />
   </div>
 </template>
 
 <script setup>
 import { inject } from "vue";
 import TaskForm from "@/components/TaskForm.vue";
-import CalendarCard from "@/components/CalendarCard.vue";
-import ProgressOverviewCard from "@/components/ProgressOverviewCard.vue";
 
 const formState = inject("formState");
 
@@ -57,6 +48,6 @@ const handleCloseEditForm = () => {
 .page-container {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  padding: 0;
 }
 </style>

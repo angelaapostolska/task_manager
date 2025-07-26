@@ -23,9 +23,9 @@ export const useTasksStore = defineStore("tasks", {
         // If successful
         this.tasks = response.data.data;
         console.log("Successfully fetched tasks: ", this.tasks.length);
-        this.tasks.forEach((task) => {
-          console.log(`Task ${task.id} is matched: `, task.matched);
-        });
+        // this.tasks.forEach((task) => {
+        //   console.log(`Task ${task.id} is matched: `, task.matched);
+        // });
       } catch (err) {
         // Error handling
         this.error = err;

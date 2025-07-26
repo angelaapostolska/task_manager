@@ -20,19 +20,11 @@
     />
 
     <!-- Icon Buttons -->
-    <v-btn
-      icon
-      class="mx-2 rounded-pill icon-button"
-      :style="{ backgroundColor: '#7C4DFF' }"
-    >
-      <v-icon color="white">mdi-view-dashboard-outline</v-icon>
+    <v-btn icon class="mx-2 rounded-square icon-button bg-gradient-purple">
+      <v-icon color="white">mdi-logout</v-icon>
     </v-btn>
 
-    <v-btn
-      icon
-      class="rounded-pill icon-button"
-      :style="{ backgroundColor: '#F06292' }"
-    >
+    <v-btn icon class="rounded-square icon-button bg-gradient-pink">
       <v-icon color="white">mdi-plus</v-icon>
     </v-btn>
   </v-toolbar>
@@ -70,9 +62,27 @@ onMounted(() => {
   border-radius: 34px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
-
 .icon-button {
   width: 48px;
   height: 48px;
+}
+
+.bg-gradient-purple {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-pink {
+  background: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+}
+
+.rounded-square {
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
