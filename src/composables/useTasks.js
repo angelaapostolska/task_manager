@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useTasksStore } from "@/stores/tasks";
 
 export function useTasks() {
@@ -38,12 +38,17 @@ export function useTasks() {
 
   const todayStats = computed(() => store.todayStats);
 
+  //reacts to the changes written in the search bar = search query
+  watch(searchQuery, async (val) => {
+    console.log("Search query changed to: ", val);
+    await store.fetchTasks({ search: val });
+  });
+
   const filteredTasks = computed(() =>
     store.tasks.map((task) => ({
       ...task,
-      matched:
-        searchQuery.value.length > 0 &&
-        task.name.toLowerCase().includes(searchQuery.value.toLowerCase()),
+      //using the same flag from the backend
+      matched: task.matched || false, // fallback false if undefined
     }))
   );
 

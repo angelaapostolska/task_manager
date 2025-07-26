@@ -39,11 +39,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useTasks } from "@/composables/useTasks";
 
-const search = ref("");
+const { searchQuery, setSearchQuery } = useTasks();
+const search = ref(searchQuery.value);
 const auth = useAuthStore();
+
+watch(search, (val) => {
+  setSearchQuery(val);
+});
 
 onMounted(() => {
   auth.getMe();
@@ -58,9 +64,10 @@ onMounted(() => {
 }
 
 .search-bar {
-  max-width: 350px;
+  max-width: 450px;
+  max-height: 60px;
   margin-right: 16px;
-  border-radius: 12px;
+  border-radius: 34px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 

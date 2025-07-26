@@ -77,6 +77,7 @@ import { useAuthStore } from "@/stores/auth";
 const auth = useAuthStore();
 const selected = ref("Tasks");
 const { todayStats, fetchTodayStats } = useTasks();
+console.log("Daily tasks: ", todayStats.totalTasksToday);
 
 const initials = computed(() => {
   const fullName = auth.user?.name || "";

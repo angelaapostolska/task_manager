@@ -14,13 +14,18 @@ export const useTasksStore = defineStore("tasks", {
   }),
   getters: {},
   actions: {
-    async fetchTasks() {
+    async fetchTasks(filters = {}) {
       this.isLoading = true;
       try {
-        const response = await _axios.get("/myTasks");
+        const response = await _axios.get("/myTasks", {
+          params: filters,
+        });
         // If successful
         this.tasks = response.data.data;
         console.log("Successfully fetched tasks: ", this.tasks.length);
+        this.tasks.forEach((task) => {
+          console.log(`Task ${task.id} is matched: `, task.matched);
+        });
       } catch (err) {
         // Error handling
         this.error = err;
@@ -46,8 +51,8 @@ export const useTasksStore = defineStore("tasks", {
     async fetchTodayStats() {
       try {
         const response = await _axios.get("/myTasks/todayStats");
-        this.stats = response.data;
-        console.log("Fetched today's stats", this.stats);
+        this.todayStats = response.data;
+        console.log("Fetched today's stats", this.todayStats);
       } catch (err) {
         console.error("Failed to fetch stats: ", err);
       }

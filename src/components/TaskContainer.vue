@@ -46,7 +46,7 @@
           v-for="(task, index) in lowTasks"
           :key="task.id || index"
           :task="task"
-          :class="{ 'matched-task': task.matched }"
+          :class="{ 'matched-oh o': task.matched }"
           @status-updated="update"
           class="ma-2 pa-2"
           color="green-lighten-4"
@@ -57,11 +57,11 @@
 </template>
 
 <script setup>
-import { inject, computed, onMounted } from 'vue';
-import TaskCard from './TaskCard.vue';
-import { useTasksStore } from '@/stores/tasks';
+import { inject, computed, onMounted } from "vue";
+import TaskCard from "./TaskCard.vue";
+import { useTasksStore } from "@/stores/tasks";
 
-const filteredTasks = inject('filteredTasks');
+const filteredTasks = inject("filteredTasks");
 const store = useTasksStore();
 
 onMounted(() => {
@@ -69,7 +69,7 @@ onMounted(() => {
 });
 
 const update = (updatedTask) => {
-  const index = store.tasks.findIndex(t => t.id === updatedTask.id);
+  const index = store.tasks.findIndex((t) => t.id === updatedTask.id);
   if (index !== -1) {
     store.tasks[index].completed = updatedTask.completed;
   }
@@ -77,24 +77,24 @@ const update = (updatedTask) => {
 
 // Category-specific computed tasks
 const urgentTasks = computed(() =>
-  filteredTasks.value.filter(t => t.category === 'urgent')
+  filteredTasks.value.filter((t) => t.category === "urgent")
 );
-const urgentDone = computed(() =>
-  urgentTasks.value.filter(t => t.completed).length
+const urgentDone = computed(
+  () => urgentTasks.value.filter((t) => t.completed).length
 );
 
 const midTasks = computed(() =>
-  filteredTasks.value.filter(t => t.category === 'mid')
+  filteredTasks.value.filter((t) => t.category === "mid")
 );
-const midDone = computed(() =>
-  midTasks.value.filter(t => t.completed).length
+const midDone = computed(
+  () => midTasks.value.filter((t) => t.completed).length
 );
 
 const lowTasks = computed(() =>
-  filteredTasks.value.filter(t => t.category === 'least urgent')
+  filteredTasks.value.filter((t) => t.category === "least urgent")
 );
-const lowDone = computed(() =>
-  lowTasks.value.filter(t => t.completed).length
+const lowDone = computed(
+  () => lowTasks.value.filter((t) => t.completed).length
 );
 </script>
 
@@ -136,4 +136,3 @@ const lowDone = computed(() =>
   transition: all 0.3s ease;
 }
 </style>
-
