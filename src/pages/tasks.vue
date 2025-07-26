@@ -13,6 +13,16 @@
     >
     </EditTaskForm>
   </v-dialog>
+
+  <!-- Logout Modal  -->
+  Logout Confirmation Modal
+  <v-dialog v-model="formState.showLogoutModal" persistent max-width="400">
+    <LogoutModal
+      @confirm="handleConfirmLogout"
+      @close="handleCloseLogoutModal"
+    />
+  </v-dialog>
+
   <!-- scrollable div -->
   <div class="page-container">
     <TaskContainer @open-form="handleShowForm" />
@@ -22,8 +32,11 @@
 <script setup>
 import { inject } from "vue";
 import TaskForm from "@/components/TaskForm.vue";
+import LogoutModal from "@/components/LogoutModal.vue";
+import { useAuthStore } from "@/stores/auth";
 
 const formState = inject("formState");
+const auth = useAuthStore();
 
 const handleTaskAdded = () => {
   formState.showForm = false;
@@ -41,6 +54,14 @@ const handleCloseForm = () => {
 const handleCloseEditForm = () => {
   formState.taskToEdit = null;
   formState.showEditForm = false;
+};
+
+const handleConfirmLogout = () => {
+  auth.logout();
+};
+
+const handleCloseLogoutModal = () => {
+  formState.showLogoutModal = false;
 };
 </script>
 

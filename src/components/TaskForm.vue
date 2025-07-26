@@ -1,40 +1,23 @@
 <template>
   <v-card
-    class="pa-6 mx-auto"
+    class="pa-6 mx-auto gradient-bg"
     elevation="10"
     max-width="682px"
     width="100%"
-    color="grey-lighten-2"
   >
     <v-icon
       icon="mdi-close"
       size="20"
-      class="position-absolute top-0 right-0 ma-2"
+      class="close-icon"
       @click="handleClose"
       style="cursor: pointer"
-      color="grey-darken-1"
     />
     <v-row>
-      <!-- Left side graphic -->
-      <v-col
-        cols="12"
-        md="6"
-        class="left-side d-flex align-center justify-center"
-      >
-        <v-img
-          src="../assets/graphic.png"
-          alt="Illustration"
-          max-width="250"
-          contain
-        />
-      </v-col>
-
-      <!-- Right side form -->
-      <v-col cols="12" md="6">
-        <v-form @submit.prevent="addTaskHandler">
+      <v-col cols="12" md="12">
+        <v-form @submit.prevent="addTaskHandler" class="form-selection">
           <v-text-field
             v-model="taskName"
-            label="Task Name"
+            label="Task Title *"
             variant="outlined"
             :rules="[(v) => !!v || 'Task name is required']"
           />
@@ -45,6 +28,13 @@
             label="Urgency"
             variant="outlined"
             :rules="[(v) => !!v || 'Please select urgency']"
+          />
+
+          <!-- Implement boards -->
+          <v-select
+            label="Board *"
+            variant="outlined"
+            :items="['Board 1', 'Board 2']"
           />
 
           <v-textarea
@@ -62,9 +52,18 @@
           >
           </v-text-field>
 
-          <v-btn color="deep-purple-lighten-1" class="mt-6" type="submit" block>
-            Submit
-          </v-btn>
+          <!-- Buttons -->
+          <div class="button-group">
+            <v-btn
+              class="cancel-btn"
+              variant="outlined"
+              block
+              @click="handleClose"
+            >
+              Cancel
+            </v-btn>
+            <v-btn class="create-btn" type="submit" block> Create Task </v-btn>
+          </div>
         </v-form>
       </v-col>
     </v-row>
@@ -114,9 +113,36 @@ const handleClose = () => {
 };
 </script>
 <style scoped>
-.left-side {
-  background-image: url("../assets/taskFormBg.png");
-  background-size: cover;
-  background-position: center;
+.gradient-bg {
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+}
+.close-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: #6c757d;
+}
+.button-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+.cancel-btn {
+  background-color: white;
+  color: #333;
+  border: 1px solid #ddd;
+  flex: 1;
+}
+
+.create-btn {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  flex: 1;
 }
 </style>

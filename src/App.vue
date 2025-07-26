@@ -29,6 +29,7 @@ const formState = reactive({
   showForm: false,
   showEditForm: false,
   taskToEdit: null,
+  showLogoutModal: false,
 });
 
 const { tasks, addTask, editTask, filteredTasks, setSearchQuery } = useTasks();

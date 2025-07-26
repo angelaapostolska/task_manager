@@ -20,24 +20,34 @@
     />
 
     <!-- Icon Buttons -->
-    <v-btn icon class="mx-2 rounded-square icon-button bg-gradient-purple">
+    <v-btn
+      icon
+      class="mx-2 rounded-square icon-button bg-gradient-purple"
+      @click="handleLogout"
+    >
       <v-icon color="white">mdi-logout</v-icon>
     </v-btn>
 
-    <v-btn icon class="rounded-square icon-button bg-gradient-pink">
+    <v-btn
+      icon
+      class="rounded-square icon-button bg-gradient-pink"
+      @click="handleOpenForm"
+    >
       <v-icon color="white">mdi-plus</v-icon>
     </v-btn>
   </v-toolbar>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, inject } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useTasks } from "@/composables/useTasks";
 
 const { searchQuery, setSearchQuery } = useTasks();
 const search = ref(searchQuery.value);
 const auth = useAuthStore();
+
+const formState = inject("formState");
 
 watch(search, (val) => {
   setSearchQuery(val);
@@ -46,6 +56,16 @@ watch(search, (val) => {
 onMounted(() => {
   auth.getMe();
 });
+
+//methods for the form
+
+const handleOpenForm = () => {
+  formState.showForm = true;
+};
+
+const handleLogout = () => {
+  formState.showLogoutModal = true;
+};
 </script>
 
 <style scoped>

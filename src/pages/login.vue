@@ -117,12 +117,6 @@ async function onSubmit() {
     loading.value = false;
   }
 }
-// function onSubmit() {
-//   console.log(email.value + ", " + password.value);
-//   auth.login(email.value, password.value, router).then(() => {
-//     console.log(auth.getUser);
-//   });
-// }
 
 const handleRegistrationSuccess = () => {
   showRegisterModal.value = false;
