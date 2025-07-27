@@ -58,6 +58,7 @@
             <v-select
               id="selectedBoard"
               placeholder="Select a board.."
+              v-model="selectedBoard"
               variant="solo"
               density="compact"
               :items="['Board 1', 'Board 2']"
@@ -126,6 +127,7 @@ const emit = defineEmits(["add-task", "close-form"]);
 const taskName = ref("");
 const taskDescription = ref("");
 const selectedUrgency = ref(null);
+const selectedBoard = ref(null);
 const urgencies = ["urgent", "mid", "least urgent"];
 const taskEndDate = ref("");
 
@@ -133,11 +135,12 @@ const taskEndDate = ref("");
 const { addTask } = useTasks();
 
 const addTaskHandler = async () => {
-  if (!taskName.value || !selectedUrgency.value) return;
+  if (!taskName.value || !selectedUrgency.value || !selectedBoard.value) return;
 
   await addTask({
     title: taskName.value,
     category: selectedUrgency.value,
+    board: selectedBoard.value,
     description: taskDescription.value,
     end_date: taskEndDate.value,
     state: "pending",
@@ -149,6 +152,7 @@ const addTaskHandler = async () => {
   taskName.value = "";
   taskDescription.value = "";
   selectedUrgency.value = null;
+  selectedBoard.value = null;
   taskEndDate.value = "";
 };
 const handleClose = () => {
@@ -157,9 +161,10 @@ const handleClose = () => {
 
 //disabled button until required fields are filled, add the board here too!
 const isFormValid = computed(() => {
-  return !!taskName.value && !!selectedUrgency.value;
+  return !!taskName.value && !!selectedUrgency.value && !!selectedBoard.value;
 });
 </script>
+
 <style scoped>
 .modal-header {
   display: flex;

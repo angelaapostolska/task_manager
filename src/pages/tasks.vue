@@ -1,5 +1,5 @@
 <template>
-  <!-- Task Form Create (Modal) -->
+  <!-- Task Form Create  -->
   <v-dialog v-model="formState.showForm" persistent>
     <TaskForm @add-task="handleTaskAdded" @close-form="handleCloseForm" />
   </v-dialog>
