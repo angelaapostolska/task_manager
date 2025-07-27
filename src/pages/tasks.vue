@@ -14,14 +14,6 @@
     </EditTaskForm>
   </v-dialog>
 
-  <!-- Logout Modal  -->
-  <v-dialog v-model="formState.showLogoutModal" persistent max-width="400">
-    <LogoutModal
-      @confirm="handleConfirmLogout"
-      @close="handleCloseLogoutModal"
-    />
-  </v-dialog>
-
   <!-- scrollable div -->
   <div class="page-container">
     <TaskContainer @open-form="handleShowForm" />
@@ -53,14 +45,6 @@ const handleCloseForm = () => {
 const handleCloseEditForm = () => {
   formState.taskToEdit = null;
   formState.showEditForm = false;
-};
-
-const handleConfirmLogout = () => {
-  auth.logout();
-};
-
-const handleCloseLogoutModal = () => {
-  formState.showLogoutModal = false;
 };
 </script>
 

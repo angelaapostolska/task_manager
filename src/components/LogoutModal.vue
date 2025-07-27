@@ -1,38 +1,47 @@
-<!-- src/components/LogoutModal.vue -->
 <template>
-  <v-dialog :model-value="modelValue" persistent max-width="500">
-    <v-sheet class="logout-card" elevation="6" rounded="xl">
-      <v-toolbar flat color="deep-purple-lighten-1" dark>
-        <v-toolbar-title>Confirm Logout</v-toolbar-title>
-        <v-spacer />
-        <v-btn icon @click="$emit('close')">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-toolbar>
+  <v-sheet class="logout-card" elevation="6" rounded="xl">
+    <v-toolbar flat class="modal-header">
+      <v-toolbar-title>Confirm Logout</v-toolbar-title>
+      <v-spacer />
+      <v-btn icon @click="handleClose">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
 
-      <v-divider />
+    <v-divider />
 
-      <v-card-text class="text-body-1 pa-6">
-        Are you sure you want to log out?
-      </v-card-text>
+    <v-card-text class="text-body-1 pa-6">
+      Are you sure you want to log out?
+    </v-card-text>
 
-      <v-card-actions class="pa-4 justify-end">
-        <v-btn color="grey" variant="outlined" @click="$emit('close')"
-          >Cancel</v-btn
-        >
-        <v-btn color="red" @click="$emit('confirm')">Logout</v-btn>
-      </v-card-actions>
-    </v-sheet>
-  </v-dialog>
+    <v-card-actions class="pa-4 justify-end">
+      <v-btn color="grey" variant="outlined" @click="handleClose">Cancel</v-btn>
+      <v-btn class="logout-button" @click="handleConfirm">Logout</v-btn>
+    </v-card-actions>
+  </v-sheet>
 </template>
 
 <script setup>
-defineProps(["modelValue"]);
-defineEmits(["close", "confirm"]);
+const emit = defineEmits(["close", "confirm"]);
+
+const handleClose = () => {
+  emit("close");
+};
+
+const handleConfirm = () => {
+  emit("confirm");
+};
 </script>
 
 <style scoped>
 .logout-card {
-  background-color: #f9f6ff;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+}
+.modal-header {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+.logout-button {
+  color: #f5576c;
 }
 </style>

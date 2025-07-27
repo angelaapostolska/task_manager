@@ -37,12 +37,21 @@
       <v-icon color="white">mdi-plus</v-icon>
     </v-btn>
   </v-toolbar>
+
+  <!-- Logout Modal  -->
+  <v-dialog v-model="formState.showLogoutModal" persistent max-width="400">
+    <LogoutModal
+      @confirm="handleConfirmLogout"
+      @close="handleCloseLogoutModal"
+    />
+  </v-dialog>
 </template>
 
 <script setup>
 import { ref, watch, inject } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useTasks } from "@/composables/useTasks";
+import LogoutModal from "@/components/LogoutModal.vue";
 
 const { searchQuery, setSearchQuery } = useTasks();
 const search = ref(searchQuery.value);
@@ -59,13 +68,20 @@ onMounted(() => {
 });
 
 //methods for the form
-
 const handleOpenForm = () => {
   formState.showForm = true;
 };
 
 const handleLogout = () => {
   formState.showLogoutModal = true;
+};
+
+//logout handling
+const handleConfirmLogout = () => {
+  auth.logout();
+};
+const handleCloseLogoutModal = () => {
+  formState.showLogoutModal = false;
 };
 </script>
 
