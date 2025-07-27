@@ -16,6 +16,7 @@
       prepend-inner-icon="mdi-magnify"
       hide-details
       variant="solo"
+      density="compact"
       class="search-bar"
     />
 
@@ -73,14 +74,44 @@ const handleLogout = () => {
   padding-left: 0;
   padding-right: 0;
   width: 100%;
+  background-color: transparent !important;
 }
 
 .search-bar {
   max-width: 450px;
-  max-height: 60px;
+  max-height: 40px !important;
   margin-right: 16px;
   border-radius: 34px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+::v-deep(.search-bar .v-input) {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+::v-deep(.search-bar .v-field) {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+}
+
+::v-deep(.search-bar .v-field__outline) {
+  border: 1px solid #f5f5f5 !important;
+  border-radius: 12px !important;
+}
+::v-deep(.search-bar .v-field__prepend-inner) {
+  margin-left: 10px;
+}
+
+::v-deep(.search-bar input) {
+  padding-left: 6px !important;
+}
+.search-bar input {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 14px;
 }
 .icon-button {
   width: 48px;

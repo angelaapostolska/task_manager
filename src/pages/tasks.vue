@@ -15,7 +15,6 @@
   </v-dialog>
 
   <!-- Logout Modal  -->
-  Logout Confirmation Modal
   <v-dialog v-model="formState.showLogoutModal" persistent max-width="400">
     <LogoutModal
       @confirm="handleConfirmLogout"
