@@ -61,6 +61,8 @@
               variant="solo"
               density="compact"
               :items="boards"
+              item-title="title"
+              item-value="id"
               :rules="[(v) => !!v || 'Please select board']"
               class="custom-input"
               hide-details="auto"
@@ -98,9 +100,7 @@
           </div>
 
           <div class="button-group">
-            <v-btn class="cancel-btn" variant="solo" @click="handleClose">
-              Cancel
-            </v-btn>
+            <v-btn class="cancel-btn" @click="handleClose"> Cancel </v-btn>
             <v-btn class="create-btn" type="submit" :disabled="!isFormValid">
               Save Changes
             </v-btn>
@@ -114,10 +114,15 @@
 <script setup>
 import { ref, watch, computed } from "vue";
 import { useTasks } from "@/composables/useTasks";
+import { useBoards } from "@/composables/useBoards";
+import { useBoardsStore } from "@/stores/boards";
 
-const props = defineProps({
-  task: Object,
-});
+const formState = inject("formState");
+const task = computed(() => formState?.taskToEdit || {});
+
+// const props = defineProps({
+//   task: Object,
+// });
 
 const emit = defineEmits(["update-task", "close-form"]);
 
@@ -128,19 +133,28 @@ const selectedBoard = ref(null);
 const taskEndDate = ref("");
 
 const urgencies = ["urgent", "mid", "least urgent"];
-const boards = ["Board 1", "Board 2"];
-
 const { editTask } = useTasks();
+
+//boards management
+const { fetchBoards } = useBoards();
+const boardsStore = useBoardsStore();
+const boards = computed(() => boardsStore.boards);
+
+onMounted(() => {
+  fetchBoards();
+});
 
 // Prefill the form when the task prop changes
 watch(
-  () => props.task,
-  (task) => {
-    if (task) {
+  //the watcher watches for these 2
+  [() => task.value, boards],
+  //and when either  one changes the callback receives the changed values
+  ([task, loadedBoards]) => {
+    if (task && loadedBoards.length > 0) {
       taskName.value = task.title || "";
       taskDescription.value = task.description || "";
       selectedUrgency.value = task.category || null;
-      selectedBoard.value = task.board || null;
+      selectedBoard.value = task.board_id || null;
       taskEndDate.value = task.end_date || "";
     }
   },
@@ -157,11 +171,13 @@ const editTaskHandler = async () => {
   const updatedTask = {
     title: taskName.value,
     category: selectedUrgency.value,
-    board: selectedBoard.value,
+    board_id: selectedBoard.value,
     description: taskDescription.value,
     end_date: taskEndDate.value,
     state: "pending",
   };
+
+  console.log("Selected board id: ", selectedBoard.value);
 
   await editTask(props.task.id, updatedTask);
   emit("update-task");

@@ -12,7 +12,7 @@ export const useBoardsStore = defineStore("boards", {
       try {
         const response = await _axios.get("/boards");
         // If successful
-        this.boards = response.data.data;
+        this.boards = response.data;
         console.log("Successfully fetched boards: ", this.boards.length);
       } catch (err) {
         // Error handling
@@ -25,7 +25,7 @@ export const useBoardsStore = defineStore("boards", {
     async createBoard(newBoardData) {
       try {
         const response = await _axios.post("/boards", newBoardData);
-        this.boards.push(response.data.data);
+        this.boards.push(response.data);
         console.log("Board created successfully!");
       } catch (err) {
         console.error("Failed to create board: ", err);
@@ -39,7 +39,7 @@ export const useBoardsStore = defineStore("boards", {
         );
         const index = this.boards.findIndex((b) => b.id === boardId);
         if (index !== -1) {
-          this.boards[index] = response.data.data;
+          this.boards[index] = response.data;
         }
         console.log("Board updated successfully!");
       } catch (err) {

@@ -61,7 +61,9 @@
               v-model="selectedBoard"
               variant="solo"
               density="compact"
-              :items="['Board 1', 'Board 2']"
+              :items="boards"
+              item-title="title"
+              item-value="id"
               :rules="[(v) => !!v || 'Please select board']"
               class="custom-input"
               hide-details="auto"
@@ -101,9 +103,7 @@
 
           <!-- Buttons -->
           <div class="button-group">
-            <v-btn class="cancel-btn" variant="solo" @click="handleClose">
-              Cancel
-            </v-btn>
+            <v-btn class="cancel-btn" @click="handleClose"> Cancel </v-btn>
             <v-btn class="create-btn" type="submit" :disabled="!isFormValid">
               Create Task
             </v-btn>
@@ -115,8 +115,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useTasks } from "@/composables/useTasks";
+import { useBoards } from "@/composables/useBoards";
+import { useBoardsStore } from "@/stores/boards";
 
 defineProps({
   category: String,
@@ -134,13 +136,22 @@ const taskEndDate = ref("");
 // const addTaskGlobal = inject("addTask");
 const { addTask } = useTasks();
 
+//boards management
+const { fetchBoards } = useBoards();
+const boardsStore = useBoardsStore();
+const boards = computed(() => boardsStore.boards);
+
+onMounted(() => {
+  fetchBoards();
+});
+
 const addTaskHandler = async () => {
   if (!taskName.value || !selectedUrgency.value || !selectedBoard.value) return;
 
   await addTask({
     title: taskName.value,
     category: selectedUrgency.value,
-    board: selectedBoard.value,
+    board_id: selectedBoard.value,
     description: taskDescription.value,
     end_date: taskEndDate.value,
     state: "pending",
