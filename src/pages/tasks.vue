@@ -1,7 +1,11 @@
 <template>
   <!-- Task Form Create  -->
   <v-dialog v-model="formState.showForm" persistent>
-    <TaskForm @add-task="handleTaskAdded" @close-form="handleCloseForm" />
+    <TaskForm
+      :initial-board="selectedBoard"
+      @add-task="handleTaskAdded"
+      @close-form="handleCloseForm"
+    />
   </v-dialog>
 
   <!-- Task Form Edit -->
@@ -14,6 +18,9 @@
     </EditTaskForm>
   </v-dialog>
 
+  <!-- DateCard -->
+  <DateCard></DateCard>
+
   <!-- scrollable div -->
   <div class="page-container">
     <TaskContainer @open-form="handleShowForm" />
@@ -23,8 +30,10 @@
 <script setup>
 import { inject } from "vue";
 import TaskForm from "@/components/TaskForm.vue";
-import LogoutModal from "@/components/LogoutModal.vue";
 import { useAuthStore } from "@/stores/auth";
+import DateCard from "@/components/DateCard.vue";
+
+const selectedBoard = ref(null);
 
 const formState = inject("formState");
 const auth = useAuthStore();

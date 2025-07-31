@@ -1,3 +1,4 @@
+<!-- you have to listen for the emit from board dropdown here in order to show the correct dropdown list -->
 <template>
   <div class="container-scroll-wrapper">
     <v-card class="task-container elevation-3 px-6" color="grey-lighten-3">

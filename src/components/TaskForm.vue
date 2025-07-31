@@ -140,7 +140,6 @@ const { addTask } = useTasks();
 const { fetchBoards } = useBoards();
 const boardsStore = useBoardsStore();
 const boards = computed(() => boardsStore.boards);
-
 onMounted(() => {
   fetchBoards();
 });
@@ -174,6 +173,20 @@ const handleClose = () => {
 const isFormValid = computed(() => {
   return !!taskName.value && !!selectedUrgency.value && !!selectedBoard.value;
 });
+
+//nz
+const formState = inject("formState");
+watch(
+  () => formState.selectedBoard,
+  (newBoard) => {
+    if (newBoard) {
+      selectedBoard.value = newBoard;
+    } else {
+      selectedBoard.value = null;
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>

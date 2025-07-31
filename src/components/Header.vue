@@ -69,6 +69,7 @@ onMounted(() => {
 
 //methods for the form
 const handleOpenForm = () => {
+  formState.selectedBoard = null;
   formState.showForm = true;
 };
 
