@@ -56,8 +56,13 @@ const handleBoardSelected = (board) => {
 
 const formState = inject("formState");
 
-const handleTaskAdded = () => {
+const handleTaskAdded = async () => {
   formState.showForm = false;
+  if (selectedBoard.value) {
+    await fetchTasks({ board_id: selectedBoard.value });
+  } else {
+    await fetchTasks();
+  }
 };
 
 const handleTaskUpdated = () => {

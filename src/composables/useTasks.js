@@ -43,14 +43,6 @@ export function useTasks() {
     await store.fetchTasks({ search: val });
   });
 
-  // const filteredTasks = computed(() =>
-  //   store.tasks.map((task) => ({
-  //     ...task,
-  //     //using the same flag from the backend
-  //     matched: task.matched || false, // fallback false if undefined
-  //   }))
-  // );
-
   const tasks = computed(() => store.tasks);
 
   return {

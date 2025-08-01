@@ -47,7 +47,7 @@ export const useTasksStore = defineStore("tasks", {
     async createTask(newTaskData) {
       try {
         const response = await _axios.post("/tasks", newTaskData);
-        this.tasks.push(response.data.data);
+        //this.tasks.push(response.data.data);
         console.log("Task created successfully!");
       } catch (err) {
         console.error("Failed to create task: ", err);
