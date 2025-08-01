@@ -109,7 +109,7 @@ const handleOpenForm = () => {
   border-image-slice: 1;
 }
 .container-wrapper {
-  padding: 24px;
+  padding: 14px 24px;
 }
 .date {
   font-size: x-large;

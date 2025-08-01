@@ -21,7 +21,7 @@
   <!-- DateCard -->
   <DateCard></DateCard>
 
-  <!-- scrollable div -->
+  <!-- Tasks Containers -->
   <div class="page-container">
     <TaskContainer @open-form="handleShowForm" />
   </div>
@@ -62,5 +62,6 @@ const handleCloseEditForm = () => {
   flex: 1;
   display: flex;
   padding: 0;
+  margin-bottom: 100px;
 }
 </style>
