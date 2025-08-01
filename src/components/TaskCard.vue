@@ -120,7 +120,7 @@ const onCheckboxChange = async (event) => {
   console.log("Checked task is: ", props.task);
   console.log("ID: ", props.task.id);
 
-  props.task.completed = event.target.checked;
+  props.task.completed = event.target.checked ? "completed" : "pending";
   if (event.target.checked) {
     await markTaskCompleted(props.task.id);
   }

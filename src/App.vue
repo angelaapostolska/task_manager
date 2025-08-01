@@ -33,7 +33,7 @@ const formState = reactive({
   selectedBoard: null,
 });
 
-const { tasks, addTask, editTask, setSearchQuery } = useTasks();
+const { tasks, addTask, editTask, filteredTasks, setSearchQuery } = useTasks();
 provide("formState", formState);
 provide("tasks", tasks);
 provide("addTask", addTask);
@@ -49,6 +49,6 @@ body,
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 </style>

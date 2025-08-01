@@ -59,9 +59,17 @@
     <v-card class="task-column elevation-3 completed-col">
       <div class="header-row pa-4">
         <h3>Completed</h3>
-        <span></span>
+        <span> {{ completedTasks.length }}</span>
       </div>
-      <div class="scroll-area"></div>
+      <div class="scroll-area">
+        <TaskCard
+          v-for="(task, index) in completedTasks"
+          :key="task.id || index"
+          :task="task"
+          @status-updated="update"
+          class="ma-2"
+        ></TaskCard>
+      </div>
     </v-card>
   </div>
 </template>
@@ -80,7 +88,7 @@ const props = defineProps({
   },
 });
 
-//sto prae ova?
+//updating the tasks state (to completed)
 const update = (updatedTask) => {
   const index = store.tasks.findIndex((t) => t.id === updatedTask.id);
   if (index !== -1) {
@@ -90,24 +98,30 @@ const update = (updatedTask) => {
 
 // Category-specific computed tasks
 const urgentTasks = computed(() =>
-  props.tasks.filter((t) => t.category === "urgent")
+  props.tasks.filter((t) => t.category === "urgent" && t.state !== "completed")
 );
 const urgentDone = computed(
   () => urgentTasks.value.filter((t) => t.completed).length
 );
 
 const midTasks = computed(() =>
-  props.tasks.filter((t) => t.category === "mid")
+  props.tasks.filter((t) => t.category === "mid" && t.state !== "completed")
 );
 const midDone = computed(
   () => midTasks.value.filter((t) => t.completed).length
 );
 
 const lowTasks = computed(() =>
-  props.tasks.filter((t) => t.category === "least urgent")
+  props.tasks.filter(
+    (t) => t.category === "least urgent" && t.state !== "completed"
+  )
 );
 const lowDone = computed(
   () => lowTasks.value.filter((t) => t.completed).length
+);
+
+const completedTasks = computed(() =>
+  props.tasks.filter((t) => t.state === "completed")
 );
 </script>
 
