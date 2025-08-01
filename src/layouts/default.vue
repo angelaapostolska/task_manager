@@ -33,18 +33,22 @@ import SideBar from "@/components/SideBar.vue";
   overflow: hidden;
 }
 .right-side {
-  flex-grow: 1; /* will take the remaining space */
+  flex-grow: 1;
   display: flex;
-  flex-direction: column; /* used to position the header at the top, main content at the bottom */
+  flex-direction: column;
   height: 100vh;
 }
 .main-container {
   flex-grow: 1;
-  overflow-y: auto;
 }
 .page-wrapper {
   max-width: 90vw;
   margin: 0 auto;
   width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
 }
 </style>

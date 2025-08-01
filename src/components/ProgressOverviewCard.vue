@@ -31,6 +31,7 @@
 <script setup>
 import { inject, computed } from "vue";
 
+//ne postoi vishe
 const filteredTasks = inject("filteredTasks");
 
 // Define your categories with keys matching task.category values
@@ -43,15 +44,18 @@ const categories = [
 const progressData = computed(() => {
   return categories.map(({ name, key, color }) => {
     // Get all tasks in this category
-    const tasksInCategory = filteredTasks.value.filter(t => t.category === key);
+    const tasksInCategory = filteredTasks.value.filter(
+      (t) => t.category === key
+    );
 
     // Count completed tasks — THIS triggers reactivity on completion changes
-    const doneCount = tasksInCategory.filter(t => t.completed).length;
+    const doneCount = tasksInCategory.filter((t) => t.completed).length;
 
     const totalCount = tasksInCategory.length;
 
     // Calculate progress %
-    const progress = totalCount === 0 ? 0 : Math.round((doneCount / totalCount) * 100);
+    const progress =
+      totalCount === 0 ? 0 : Math.round((doneCount / totalCount) * 100);
 
     return {
       name,
@@ -95,4 +99,3 @@ const progressData = computed(() => {
   color: #616161;
 }
 </style>
-

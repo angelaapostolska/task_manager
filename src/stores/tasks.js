@@ -34,19 +34,6 @@ export const useTasksStore = defineStore("tasks", {
         this.isLoading = false;
       }
     },
-    //fetch tasks by board (new implementation)
-    async fetchTasksByBoard(boardId) {
-      this.isLoading = true;
-      try {
-        const response = await _axios.get(`/myTasks/byBoard/${boardId}`);
-        this.tasks = response.data.data;
-        console.log(`Fetched tasks for board ${boardId}: `, this.tasks.length);
-      } catch (err) {
-        console.error("Failed to fetch tasks by board: ", err);
-      } finally {
-        this.loading = false;
-      }
-    },
     //fetch daily accomplishments stats
     async fetchTodayStats() {
       try {

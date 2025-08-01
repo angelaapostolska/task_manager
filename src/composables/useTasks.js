@@ -8,6 +8,10 @@ export function useTasks() {
   const store = useTasksStore();
   const searchQuery = ref("");
 
+  const fetchTasks = async (filters = {}) => {
+    await store.fetchTasks(filters);
+  };
+
   const addTask = async (newTask) => {
     await store.createTask(newTask);
   };
@@ -27,11 +31,6 @@ export function useTasks() {
     searchQuery.value = query;
   };
 
-  //new implementation
-  const fetchTasksByBoard = async (boardId) => {
-    await store.fetchTodayStats();
-  };
-
   const fetchTodayStats = async () => {
     await store.fetchTodayStats();
   };
@@ -44,25 +43,26 @@ export function useTasks() {
     await store.fetchTasks({ search: val });
   });
 
-  const filteredTasks = computed(() =>
-    store.tasks.map((task) => ({
-      ...task,
-      //using the same flag from the backend
-      matched: task.matched || false, // fallback false if undefined
-    }))
-  );
+  // const filteredTasks = computed(() =>
+  //   store.tasks.map((task) => ({
+  //     ...task,
+  //     //using the same flag from the backend
+  //     matched: task.matched || false, // fallback false if undefined
+  //   }))
+  // );
+
+  const tasks = computed(() => store.tasks);
 
   return {
-    tasks: store.tasks,
+    tasks,
     addTask,
     editTask,
     deleteTask,
     searchQuery,
     setSearchQuery,
-    filteredTasks,
     markTaskCompleted,
-    fetchTasksByBoard,
     fetchTodayStats,
     todayStats,
+    fetchTasks,
   };
 }

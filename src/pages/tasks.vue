@@ -19,24 +19,42 @@
   </v-dialog>
 
   <!-- DateCard -->
-  <DateCard></DateCard>
+  <DateCard @board-selected="handleBoardSelected"></DateCard>
 
   <!-- Tasks Containers -->
   <div class="page-container">
-    <TaskContainer @open-form="handleShowForm" />
+    <TaskContainer @open-form="handleShowForm" :tasks="tasks" />
   </div>
 </template>
 
 <script setup>
 import { inject } from "vue";
 import TaskForm from "@/components/TaskForm.vue";
-import { useAuthStore } from "@/stores/auth";
 import DateCard from "@/components/DateCard.vue";
+import TaskContainer from "@/components/TaskContainer.vue";
+import { useTasks } from "@/composables/useTasks";
 
 const selectedBoard = ref(null);
+const { fetchTasks, tasks } = useTasks();
+
+//board changes watcher
+watch(
+  selectedBoard,
+  async (newBoard) => {
+    if (newBoard) {
+      await fetchTasks({ board_id: newBoard.id });
+    } else {
+      await fetchTasks();
+    }
+  },
+  { immediate: true }
+);
+
+const handleBoardSelected = (board) => {
+  selectedBoard.value = board;
+};
 
 const formState = inject("formState");
-const auth = useAuthStore();
 
 const handleTaskAdded = () => {
   formState.showForm = false;
@@ -59,9 +77,10 @@ const handleCloseEditForm = () => {
 
 <style scoped>
 .page-container {
-  flex: 1;
+  height: 100vh;
   display: flex;
-  padding: 0;
-  margin-bottom: 100px;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 1;
 }
 </style>

@@ -67,17 +67,20 @@
 </template>
 
 <script setup>
-import { inject, computed, onMounted } from "vue";
+import { computed } from "vue";
 import TaskCard from "./TaskCard.vue";
 import { useTasksStore } from "@/stores/tasks";
 
-const filteredTasks = inject("filteredTasks");
 const store = useTasksStore();
 
-onMounted(() => {
-  store.fetchTasks();
+const props = defineProps({
+  tasks: {
+    type: Array,
+    default: () => [],
+  },
 });
 
+//sto prae ova?
 const update = (updatedTask) => {
   const index = store.tasks.findIndex((t) => t.id === updatedTask.id);
   if (index !== -1) {
@@ -87,21 +90,21 @@ const update = (updatedTask) => {
 
 // Category-specific computed tasks
 const urgentTasks = computed(() =>
-  filteredTasks.value.filter((t) => t.category === "urgent")
+  props.tasks.filter((t) => t.category === "urgent")
 );
 const urgentDone = computed(
   () => urgentTasks.value.filter((t) => t.completed).length
 );
 
 const midTasks = computed(() =>
-  filteredTasks.value.filter((t) => t.category === "mid")
+  props.tasks.filter((t) => t.category === "mid")
 );
 const midDone = computed(
   () => midTasks.value.filter((t) => t.completed).length
 );
 
 const lowTasks = computed(() =>
-  filteredTasks.value.filter((t) => t.category === "least urgent")
+  props.tasks.filter((t) => t.category === "least urgent")
 );
 const lowDone = computed(
   () => lowTasks.value.filter((t) => t.completed).length
@@ -116,12 +119,14 @@ const lowDone = computed(
 }
 
 .columns-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
+  flex: 1;
+  overflow-y: auto;
   padding: 14px 24px;
-  box-sizing: border-box;
+  gap: 24px;
+  display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .task-column {
