@@ -12,6 +12,7 @@
       <input
         type="checkbox"
         :checked="task.state === 'completed'"
+        :disabled="task.state === 'completed'"
         @change="onCheckboxChange"
       />
       <label

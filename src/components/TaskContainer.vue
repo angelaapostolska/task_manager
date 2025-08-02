@@ -4,8 +4,11 @@
     <!-- URGENT -->
     <v-card class="task-column elevation-3 urgent-col">
       <div class="header-row pa-4">
-        <h3>Urgent</h3>
-        <span>{{ urgentDone }}/{{ urgentTasks.length }}</span>
+        <div class="header-title">
+          <span class="category-bullet urgent"></span>
+          <h3>Urgent Tasks</h3>
+        </div>
+        <div class="task-count-badge">{{ urgentTasks.length }}</div>
       </div>
       <div class="scroll-area">
         <TaskCard
@@ -22,8 +25,11 @@
     <!-- MID -->
     <v-card class="task-column elevation-3 mid-col">
       <div class="header-row pa-4">
-        <h3>Mid</h3>
-        <span>{{ midDone }}/{{ midTasks.length }}</span>
+        <div class="header-title">
+          <span class="category-bullet mid"></span>
+          <h3>Medium Urgency</h3>
+        </div>
+        <div class="task-count-badge">{{ midTasks.length }}</div>
       </div>
       <div class="scroll-area">
         <TaskCard
@@ -40,8 +46,11 @@
     <!-- LOW -->
     <v-card class="task-column elevation-3 low-col">
       <div class="header-row pa-4">
-        <h3>Low</h3>
-        <span>{{ lowDone }}/{{ lowTasks.length }}</span>
+        <div class="header-title">
+          <span class="category-bullet low"></span>
+          <h3>Low Urgency</h3>
+        </div>
+        <div class="task-count-badge">{{ lowTasks.length }}</div>
       </div>
       <div class="scroll-area">
         <TaskCard
@@ -58,8 +67,11 @@
     <!-- COMPLETED -->
     <v-card class="task-column elevation-3 completed-col">
       <div class="header-row pa-4">
-        <h3>Completed</h3>
-        <span> {{ completedTasks.length }}</span>
+        <div class="header-title">
+          <span class="category-bullet completed"></span>
+          <h3>Completed</h3>
+        </div>
+        <div class="task-count-badge">{{ completedTasks.length }}</div>
       </div>
       <div class="scroll-area">
         <TaskCard
@@ -165,8 +177,8 @@ const completedTasks = computed(() =>
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
-  position: relative; /* needed for the pseudo element */
-  padding-bottom: 12px; /* optional: space for the bottom line */
+  position: relative;
+  padding-bottom: 12px;
 }
 .header-row::after {
   content: "";
@@ -179,10 +191,42 @@ const completedTasks = computed(() =>
 }
 .header-row h3 {
   font-family: Inter, sans-serif;
-  text-transform: uppercase;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   color: #49484a;
+}
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.category-bullet {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+/* linear gradients to add to style script >> */
+.category-bullet.urgent {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+}
+.category-bullet.mid {
+  background: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+}
+.category-bullet.low {
+  background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%);
+}
+.category-bullet.completed {
+  background: linear-gradient(to bottom, #43e97b 0%, #38f9d7 100%);
+}
+.task-count-badge {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
 }
 
 .matched-task {

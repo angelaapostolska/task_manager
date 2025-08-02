@@ -14,14 +14,17 @@ export function useTasks() {
 
   const addTask = async (newTask) => {
     await store.createTask(newTask);
+    await fetchTodayStats();
   };
 
   const editTask = async (taskId, updatedTask) => {
     await store.editTask(taskId, updatedTask);
+    await fetchTodayStats();
   };
 
   const deleteTask = async (taskId) => {
     await store.deleteTask(taskId);
+    await fetchTodayStats();
   };
 
   const markTaskCompleted = async (taskId) => {
