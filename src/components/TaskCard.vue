@@ -7,6 +7,7 @@
     :variant="task.state === 'completed' ? 'plain' : 'elevated'"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
+    :style="bgStyle"
   >
     <div class="card-inner">
       <!-- checkbox + title -->
@@ -55,7 +56,7 @@
       <v-card-actions class="actions-row">
         <v-menu open-on-hover location="bottom start">
           <template #activator="{ props }">
-            <v-btn color="primary" v-bind="props" size="small">Actions</v-btn>
+            <v-btn color="white" v-bind="props" size="small">Actions</v-btn>
           </template>
           <v-list>
             <v-list-item @click="openEditForm">
@@ -81,6 +82,7 @@ const { deleteTask, markTaskCompleted } = useTasks();
 
 const props = defineProps({
   task: Object,
+  bgStyle: Object,
 });
 
 const countdown = ref("");
@@ -200,6 +202,7 @@ const handleDelete = async (taskId) => {
   white-space: normal;
   word-break: break-word;
   line-height: 1.2;
+  color: white;
 }
 .title-row {
   display: flex;
@@ -226,6 +229,7 @@ const handleDelete = async (taskId) => {
   max-height: 6em;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: white;
 }
 .actions-row {
   justify-content: flex-start;
@@ -240,7 +244,7 @@ const handleDelete = async (taskId) => {
 }
 .v-card {
   cursor: pointer;
-  background-color: #fafafa !important;
+  /* background-color: #fafafa !important; */
   /* Wiggle Animation on Hover */
   transition: transform 0.15s ease-in-out;
 }
@@ -270,5 +274,6 @@ const handleDelete = async (taskId) => {
   padding-top: 4px !important;
   padding-bottom: 4px !important;
   margin-top: 4px;
+  color: white;
 }
 </style>

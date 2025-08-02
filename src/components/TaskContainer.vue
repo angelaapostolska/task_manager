@@ -18,6 +18,7 @@
           :class="{ 'matched-task': task.matched }"
           @status-updated="update"
           class="ma-2"
+          :bgStyle="{ background: categoryGradientMap[task.category] }"
         />
       </div>
     </v-card>
@@ -39,6 +40,7 @@
           :class="{ 'matched-task': task.matched }"
           @status-updated="update"
           class="ma-2"
+          :bgStyle="{ background: categoryGradientMap[task.category] }"
         />
       </div>
     </v-card>
@@ -60,6 +62,7 @@
           :class="{ 'matched-task': task.matched }"
           @status-updated="update"
           class="ma-2"
+          :bgStyle="{ background: categoryGradientMap[task.category] }"
         />
       </div>
     </v-card>
@@ -80,6 +83,7 @@
           :task="task"
           @status-updated="update"
           class="ma-2"
+          :bgStyle="{ background: categoryGradientMap[task.category] }"
         ></TaskCard>
       </div>
     </v-card>
@@ -90,6 +94,7 @@
 import { computed } from "vue";
 import TaskCard from "./TaskCard.vue";
 import { useTasksStore } from "@/stores/tasks";
+import { taskGradients } from "@/styles/taskGradients";
 
 const store = useTasksStore();
 
@@ -99,6 +104,13 @@ const props = defineProps({
     default: () => [],
   },
 });
+
+const categoryGradientMap = {
+  urgent: taskGradients[0],
+  mid: taskGradients[3],
+  "least urgent": taskGradients[2],
+  completed: taskGradients[1],
+};
 
 //updating the tasks state (to completed)
 const update = (updatedTask) => {
