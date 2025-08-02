@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mb-4 task-card"
+    class="mb-4 task-card rounded-lg"
     elevation="12"
     hover
     max-width="400"
@@ -8,42 +8,66 @@
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
-    <v-card-title class="title d-flex align-center">
-      <input
-        type="checkbox"
-        :checked="task.state === 'completed'"
-        :disabled="task.state === 'completed'"
-        @change="onCheckboxChange"
-      />
-      <label
-        class="ms-2 task-label"
-        :class="{ 'line-through': task.state === 'completed' }"
-        >{{ task.title }}</label
-      >
-    </v-card-title>
+    <div class="card-inner">
+      <!-- checkbox + title -->
+      <v-card-title class="title-row d-flex align-start">
+        <input
+          type="checkbox"
+          class="checkbox-align"
+          :checked="task.state === 'completed'"
+          :disabled="task.state === 'completed'"
+          @change="onCheckboxChange"
+        />
+        <div class="title-date-container" ms-2>
+          <label
+            class="task-label"
+            :class="{ 'line-through': task.state === 'completed' }"
+            >{{ task.title }}</label
+          >
+          <!-- date + time remaining -->
+          <div class="date-countdown d-flex justify-space-between">
+            <span class="date-text"> {{ task.end_date }}</span>
+            <span
+              v-if="showCountdown"
+              class="countdown-text text-red font-weight-bold"
+            >
+              Time left: {{ countdown }}
+            </span>
+          </div>
+        </div>
+      </v-card-title>
 
-    <!--message -->
-    <v-card-text v-if="sassMessage" class="sass-message">
+      <!--message, implement it elsewhere, not in the task card -->
+      <!-- <v-card-text v-if="sassMessage" class="sass-message">
       💬 {{ sassMessage }}
-    </v-card-text>
+    </v-card-text> -->
 
-    <v-card-text>{{ task.description }}</v-card-text>
+      <!-- descirption -->
+      <v-card-text v-if="task.description" class="task-description pa-0">
+        {{ task.description }}
+      </v-card-text>
 
-    <v-card-text class="text-caption text-grey-darken-2 date-text">
-      <!-- End date: {{ task.end_date }} -->
-      End date: {{ task.end_date }}
-    </v-card-text>
-
-    <v-card-text v-if="showCountdown" class="text-red font-weight-bold">
+      <!-- <v-card-text v-if="showCountdown" class="text-red font-weight-bold">
       ⏳ Time left: {{ countdown }}
-    </v-card-text>
+    </v-card-text> -->
 
-    <v-card-actions>
-      <v-btn color="black" @click="openEditForm">Edit</v-btn>
-      <v-btn color="deep-purple-darken-4" @click="handleDelete(task.id)"
-        >Delete</v-btn
-      >
-    </v-card-actions>
+      <!-- actions buttons -->
+      <v-card-actions class="actions-row">
+        <v-menu open-on-hover location="bottom start">
+          <template #activator="{ props }">
+            <v-btn color="primary" v-bind="props" size="small">Actions</v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="openEditForm">
+              <v-list-item-title>Edit</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="handleDelete(task.id)">
+              <v-list-item-title>Delete</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-card-actions>
+    </div>
   </v-card>
 </template>
 
@@ -166,13 +190,53 @@ const handleDelete = async (taskId) => {
 </script>
 
 <style scoped>
+.card-inner {
+  padding: 14px 7px;
+}
 .task-label {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 500;
+  max-width: 250px;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.2;
+}
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+.title-date-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.date-countdown {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #666;
+  margin-top: 2px;
+}
+.task-description {
+  font-size: 14px;
+  color: #444;
+  margin: 4px 0 4px 39px;
+  max-height: 6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.actions-row {
+  justify-content: flex-start;
 }
 .line-through {
   text-decoration: line-through;
   opacity: 0.6;
+}
+.checkbox-align {
+  margin-top: 5px;
+  vertical-align: top;
 }
 .v-card {
   cursor: pointer;
