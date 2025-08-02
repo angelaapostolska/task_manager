@@ -137,7 +137,8 @@ const completedTasks = computed(() =>
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "../styles/gradients.scss";
 .matched-task {
   border: 2px solid #7e57c2;
   box-shadow: 0 4px 10px rgba(49, 27, 146, 0.4);
@@ -207,16 +208,16 @@ const completedTasks = computed(() =>
 }
 /* linear gradients to add to style script >> */
 .category-bullet.urgent {
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  background: $purple-gradient;
 }
 .category-bullet.mid {
-  background: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+  background: $pink-gradient;
 }
 .category-bullet.low {
-  background: linear-gradient(to bottom, #4facfe 0%, #00f2fe 100%);
+  background: $blue-gradient;
 }
 .category-bullet.completed {
-  background: linear-gradient(to bottom, #43e97b 0%, #38f9d7 100%);
+  background: $green-gradient;
 }
 .task-count-badge {
   width: 30px;
