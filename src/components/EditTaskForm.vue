@@ -120,10 +120,6 @@ import { useBoardsStore } from "@/stores/boards";
 const formState = inject("formState");
 const task = computed(() => formState?.taskToEdit || {});
 
-// const props = defineProps({
-//   task: Object,
-// });
-
 const emit = defineEmits(["update-task", "close-form"]);
 
 const taskName = ref("");

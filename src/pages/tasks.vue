@@ -11,7 +11,6 @@
   <!-- Task Form Edit -->
   <v-dialog v-model="formState.showEditForm" persistent>
     <EditTaskForm
-      :task="formState.taskToEdit"
       @update-task="handleTaskUpdated"
       @close-form="handleCloseEditForm"
     >

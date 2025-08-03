@@ -52,7 +52,7 @@
       <v-spacer />
 
       <!-- progress bar -->
-      <div class="pa-4">
+      <div class="pa-4 glass-bg">
         <div class="text-white text-subtitle-2 mb-2">Daily Progress</div>
         <v-progress-linear
           :model-value="todayStats.percentage"
@@ -151,5 +151,15 @@ const navItems = [
 
 .custom-icon-box .v-icon {
   color: #434343;
+}
+
+.glass-bg {
+  background-color: rgba(255, 255, 255, 0.15); /* translucent white */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 13px;
+  backdrop-filter: blur(10px); /* glassy blur effect */
+  -webkit-backdrop-filter: blur(10px);
+  padding: 16px; /* add some spacing inside */
+  margin: 0 12px 12px 12px; /* some margin to align nicely */
 }
 </style>

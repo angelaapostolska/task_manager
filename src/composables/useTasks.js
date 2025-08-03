@@ -53,6 +53,7 @@ export function useTasks() {
 
   const markTaskCompleted = async (taskId) => {
     await store.markTaskCompleted(taskId);
+    await fetchTodayStats();
   };
   const setSearchQuery = (query) => {
     searchQuery.value = query;
