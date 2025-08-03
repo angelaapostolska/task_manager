@@ -179,7 +179,7 @@ const editTaskHandler = async () => {
 
   console.log("Selected board id: ", selectedBoard.value);
 
-  await editTask(props.task.id, updatedTask);
+  await editTask(task.value.id, updatedTask);
   emit("update-task");
 };
 

@@ -1,5 +1,7 @@
 import { ref, computed, watch } from "vue";
 import { useTasksStore } from "@/stores/tasks";
+import { debounce } from "lodash";
+import { nextTick } from "vue";
 
 export function useTasks() {
   //change the old reactive tasks list with the tasks list from our store
@@ -7,6 +9,28 @@ export function useTasks() {
   // const tasks = ref([]);
   const store = useTasksStore();
   const searchQuery = ref("");
+
+  const debouncedFetch = debounce(async (val) => {
+    await store.fetchTasks({ search: val });
+
+    // wait for DOM updates to fully settle
+    await nextTick();
+
+    setTimeout(() => {
+      const matchedEl = document.querySelector(".matched-task");
+      if (matchedEl) {
+        matchedEl.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 100);
+  }, 300);
+
+  watch(searchQuery, (val) => {
+    console.log("Debounced search: ", val);
+    debouncedFetch(val);
+  });
 
   const fetchTasks = async (filters = {}) => {
     await store.fetchTasks(filters);

@@ -85,7 +85,7 @@ const handleCloseEditForm = () => {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
   flex: 1;
 }
 </style>

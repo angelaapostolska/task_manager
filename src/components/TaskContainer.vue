@@ -16,6 +16,7 @@
           :key="task.id || index"
           :task="task"
           :class="{ 'matched-task': task.matched }"
+          :ref="task.matched ? 'matchedTask' : null"
           @status-updated="update"
           class="ma-2"
           :bgStyle="{ background: categoryGradientMap[task.category] }"
@@ -38,6 +39,7 @@
           :key="task.id || index"
           :task="task"
           :class="{ 'matched-task': task.matched }"
+          :ref="task.matched ? 'matchedTask' : null"
           @status-updated="update"
           class="ma-2"
           :bgStyle="{ background: categoryGradientMap[task.category] }"
@@ -60,6 +62,7 @@
           :key="task.id || index"
           :task="task"
           :class="{ 'matched-task': task.matched }"
+          :ref="task.matched ? 'matchedTask' : null"
           @status-updated="update"
           class="ma-2"
           :bgStyle="{ background: categoryGradientMap[task.category] }"
@@ -155,6 +158,18 @@ const completedTasks = computed(() =>
   border: 2px solid #7e57c2;
   box-shadow: 0 4px 10px rgba(49, 27, 146, 0.4);
   transition: all 0.3s ease;
+  animation: fadeInMatch 0.3s ease-in-out;
+}
+
+@keyframes fadeInMatch {
+  from {
+    transform: scale(0.98);
+    opacity: 0.3;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .columns-wrapper {
