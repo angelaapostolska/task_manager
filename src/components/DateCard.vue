@@ -10,21 +10,20 @@
           <span class="board-label">Board</span>
           <v-select
             v-model="selectedBoard"
-            :items="boards"
+            class="custom-board-select"
+            hide-details
             item-title="title"
             item-value="id"
-            variant="plain"
-            hide-details
+            :items="boards"
             :menu-props="{ offsetY: true }"
-            class="custom-board-select"
             :placeholder="selectedBoardLabel"
+            variant="plain"
             @update:model-value="handleBoardSelect"
-          >
-          </v-select>
+          />
         </div>
         <v-btn
-          prepend-icon="mdi-plus"
           class="create-btn"
+          prepend-icon="mdi-plus"
           @click="handleOpenForm"
         >
           Create Task
@@ -33,53 +32,46 @@
     </div>
   </div>
 </template>
+
 <script setup>
-import { useBoardsStore } from "@/stores/boards";
-import { useBoards } from "@/composables/useBoards";
+  import { computed, inject, onMounted, ref } from 'vue';
+  import { useBoardsStore } from '@/stores/boards';
 
-const formState = inject("formState");
+  const formState = inject('formState');
+  const boardsStore = useBoardsStore();
 
-//boards management
-const { fetchBoards } = useBoards();
-const boardsStore = useBoardsStore();
-const boards = computed(() => boardsStore.boards);
-onMounted(() => {
-  fetchBoards();
-});
+  const boards = computed(() => boardsStore.boards);
+  onMounted(() => {
+    boardsStore.fetchBoards();
+  });
 
-const emit = defineEmits(["board-selected"]);
+  const selectedBoard = ref(null);
+  const emit = defineEmits(['board-selected']);
 
-const today = new Date();
-const formattedDate = computed(() => {
-  const day = today.getDate();
-  const month = today.toLocaleString("en-GB", { month: "long" });
-  const weekday = today.toLocaleString("en-GB", { weekday: "long" });
+  const today = new Date();
+  const formattedDate = computed(() => {
+    const day = today.getDate();
+    const month = today.toLocaleString('en-GB', { month: 'long' });
+    const weekday = today.toLocaleString('en-GB', { weekday: 'long' });
+    return `${day} ${month}, ${weekday}`;
+  });
 
-  return `${day} ${month}, ${weekday}`;
-});
+  const handleBoardSelect = boardId => {
+    const selected = boards.value.find(b => b.id === boardId);
+    emit('board-selected', selected);
+  };
 
-const selectedBoard = ref(null);
+  const selectedBoardLabel = computed(() => {
+    const board = boards.value.find(b => b.id === selectedBoard.value);
+    return board ? board.title : 'Board';
+  });
 
-const handleBoardSelect = (boardId) => {
-  const selected = boards.value.find((b) => b.id === boardId);
-  console.log("Selected board: ", selected);
-
-  emit("board-selected", selected);
-};
-
-const selectedBoardLabel = computed(() => {
-  const board = boards.value.find((b) => b.id === selectedBoard.value);
-  return board ? board.title : "Board";
-});
-
-const handleOpenForm = () => {
-  //dynamically creates another property to formState to a ref value
-  //for the selected board
-  //set the value equal to the board selected in the dropdown
-  formState.selectedBoard = selectedBoard.value;
-  formState.showForm = true;
-};
+  const handleOpenForm = () => {
+    formState.selectedBoard = selectedBoard.value;
+    formState.showForm = true;
+  };
 </script>
+
 <style scoped>
 .card {
   background: linear-gradient(to right, #ffffff 0%, #f8f9fa 100%);
@@ -119,9 +111,8 @@ const handleOpenForm = () => {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: white;
-  font-weight: 600;
   color: black;
+  font-weight: 600;
 }
 .boards-dropdown .label {
   font-size: 16px;
@@ -130,12 +121,12 @@ const handleOpenForm = () => {
   margin: 0;
   display: flex;
   align-items: center;
-  height: 40px; /* Match v-select height */
+  height: 40px;
 }
 .custom-board-select {
   background-color: transparent;
   border: none;
-  color: white;
+  color: black;
   min-width: 160px;
   max-width: 240px;
   padding: 4px 8px;
@@ -164,11 +155,6 @@ const handleOpenForm = () => {
 .board-label {
   margin-top: 12px;
   font-size: x-large;
-}
-::v-deep(.custom-board-select .v-field__input),
-::v-deep(.custom-board-select .v-select__selections),
-::v-deep(.custom-board-select .v-list-item-title) {
-  color: black !important;
 }
 .create-btn {
   background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);

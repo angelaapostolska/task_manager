@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { inject, computed } from "vue";
+import { computed, inject } from "vue";
 
 //ne postoi vishe
 const filteredTasks = inject("filteredTasks");

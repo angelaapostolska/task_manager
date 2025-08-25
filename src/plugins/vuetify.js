@@ -5,6 +5,8 @@
  */
 
 // Styles
+
+import { VCalendar } from 'vuetify/labs/VCalendar'
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 
@@ -15,5 +17,8 @@ import { createVuetify } from "vuetify";
 export default createVuetify({
   theme: {
     defaultTheme: "light",
+  },
+  components: {
+    VCalendar,
   },
 });

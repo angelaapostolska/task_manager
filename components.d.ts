@@ -9,6 +9,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BoardCard: typeof import('./src/components/BoardCard.vue')['default']
+    BoardForm: typeof import('./src/components/BoardForm.vue')['default']
+    BoardPanel: typeof import('./src/components/BoardPanel.vue')['default']
     CalendarCard: typeof import('./src/components/CalendarCard.vue')['default']
     DateCard: typeof import('./src/components/DateCard.vue')['default']
     EditTaskForm: typeof import('./src/components/EditTaskForm.vue')['default']

@@ -1,53 +1,61 @@
 <template>
-  <!-- Task Form Create (Modal) -->
-  <v-dialog v-model="formState.showForm" persistent>
-    <TaskForm @add-task="handleTaskAdded" @close-form="handleCloseForm" />
-  </v-dialog>
-
-  <!-- Task Form Edit -->
-  <v-dialog v-model="formState.showEditForm" persistent>
-    <EditTaskForm
-      :task="formState.taskToEdit"
-      @update-task="handleTaskUpdated"
-      @close-form="handleCloseEditForm"
-    >
-    </EditTaskForm>
-  </v-dialog>
-  <!-- scrollable div -->
   <div class="page-container">
     <!-- title plus add button -->
     <div class="header">
       <h2>Your boards</h2>
-      <v-btn class="create-btn">Create board</v-btn>
+      <v-btn class="create-btn" @click="showBoardForm = true">
+        Create board
+      </v-btn>
     </div>
 
-    <!-- user's boards carrousel -->
-    <BoardCard></BoardCard>
+    <!-- Loop over boards vertically -->
+    <div v-if="boards.length" class="boards-container">
+      <BoardCard
+        v-for="board in boards"
+        :key="board.id"
+        :title="board.title"
+        :gradient="board.gradient"
+        @delete-board="deleteBoard(board.id)"
+      />
+    </div>
+    <div v-else>
+      <p>No boards yet. Create one!</p>
+    </div>
+
+    <!-- Board Form Modal -->
+    <v-dialog v-model="showBoardForm" persistent>
+      <BoardForm
+        @board-created="handleBoardCreated"
+        @close="showBoardForm = false"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script setup>
-import { inject } from "vue";
-import TaskForm from "@/components/TaskForm.vue";
+import { ref } from "vue";
+import { useBoardsStore } from "@/stores/boards";
+import BoardCard from "@/components/BoardCard.vue";
+import BoardForm from "@/components/BoardForm.vue";
 
-const formState = inject("formState");
+const showBoardForm = ref(false);
+const boardsStore = useBoardsStore();
+const boards = boardsStore.boards;
 
-const handleTaskAdded = () => {
-  formState.showForm = false;
+// Add the new board immediately to the list
+const handleBoardCreated = (newBoard) => {
+  boards.push({
+    id: Date.now(), // temporary unique id
+    title: newBoard.title,
+    gradient: newBoard.gradient,
+  });
+  showBoardForm.value = false;
 };
 
-const handleTaskUpdated = () => {
-  formState.taskToEdit = null;
-  formState.showEditForm = false;
-};
-
-const handleCloseForm = () => {
-  formState.showForm = false;
-};
-
-const handleCloseEditForm = () => {
-  formState.taskToEdit = null;
-  formState.showEditForm = false;
+// Delete a board
+const deleteBoard = (id) => {
+  const index = boards.findIndex((b) => b.id === id);
+  if (index !== -1) boards.splice(index, 1);
 };
 </script>
 
@@ -69,4 +77,28 @@ const handleCloseEditForm = () => {
   border-radius: 12px !important;
   font-weight: 400 !important;
 }
+
+/* Make boards display vertically */
+.boards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

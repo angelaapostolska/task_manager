@@ -4,41 +4,40 @@
   </component>
 </template>
 <script setup>
-import { provide, reactive } from "vue";
-import { useTasks } from "./composables/useTasks";
-import { useRoute } from "vue-router";
-import { setAuthToken } from "./plugins/axios";
-import { useAuthStore } from "./stores/auth";
+  import { provide, reactive } from 'vue';
+  import { useTasks } from './composables/useTasks';
+  import { useRoute } from 'vue-router';
+  import { setAuthToken } from './plugins/axios';
+  import { useAuthStore } from './stores/auth';
 
-const route = useRoute();
-const router = useRouter();
-const auth = useAuthStore();
-const layout = route.meta.layout || "default";
+  const route = useRoute();
+  const auth = useAuthStore();
+  const layout = route.meta.layout || 'default';
 
-onBeforeMount(async () => {
-  console.log("App mounted. Initializing authentication check.");
-  if (localStorage) {
-    const current_token = localStorage.access_token;
-    setAuthToken(current_token);
-    auth.getMe();
-    console.log("App: ", current_token);
-  }
-});
+  onBeforeMount(async () => {
+    console.log('App mounted. Initializing authentication check.');
+    if (localStorage) {
+      const current_token = localStorage.access_token;
+      setAuthToken(current_token);
+      auth.getMe();
+      console.log('App: ', current_token);
+    }
+  });
 
-const formState = reactive({
-  showForm: false,
-  showEditForm: false,
-  taskToEdit: null,
-  showLogoutModal: false,
-  selectedBoard: null,
-});
+  const formState = reactive({
+    showForm: false,
+    showEditForm: false,
+    taskToEdit: null,
+    showLogoutModal: false,
+    selectedBoard: null,
+  });
 
-const { tasks, addTask, editTask, filteredTasks, setSearchQuery } = useTasks();
-provide("formState", formState);
-provide("tasks", tasks);
-provide("addTask", addTask);
-provide("editTask", editTask);
-provide("setSearchQuery", setSearchQuery);
+  const { tasks, addTask, editTask, filteredTasks, setSearchQuery } = useTasks();
+  provide('formState', formState);
+  provide('tasks', tasks);
+  provide('addTask', addTask);
+  provide('editTask', editTask);
+  provide('setSearchQuery', setSearchQuery);
 </script>
 
 <!-- ✅ global styles: for nuking global scroll -->

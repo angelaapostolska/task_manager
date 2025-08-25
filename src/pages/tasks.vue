@@ -13,8 +13,7 @@
     <EditTaskForm
       @update-task="handleTaskUpdated"
       @close-form="handleCloseEditForm"
-    >
-    </EditTaskForm>
+    />
   </v-dialog>
 
   <!-- DateCard -->
@@ -22,26 +21,36 @@
 
   <!-- Tasks Containers -->
   <div class="page-container">
-    <TaskContainer @open-form="handleShowForm" :tasks="tasks" />
+    <TaskContainer :tasks="tasks" />
   </div>
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { ref, watch, inject, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import TaskForm from "@/components/TaskForm.vue";
+import EditTaskForm from "@/components/EditTaskForm.vue";
 import DateCard from "@/components/DateCard.vue";
 import TaskContainer from "@/components/TaskContainer.vue";
 import { useTasks } from "@/composables/useTasks";
 
-const selectedBoard = ref(null);
+const route = useRoute();
+const formState = inject("formState");
+
+const selectedBoard = ref(null); // can be an ID (number) or a board object
 const { fetchTasks, tasks } = useTasks();
 
-//board changes watcher
+// normalize board id whether value is object or number
+const toBoardId = (val) =>
+  val && typeof val === "object" ? val.id : val || null;
+
+// react when board changes (from dropdown OR URL)
 watch(
   selectedBoard,
-  async (newBoard) => {
-    if (newBoard) {
-      await fetchTasks({ board_id: newBoard.id });
+  async (val) => {
+    const id = toBoardId(val);
+    if (id) {
+      await fetchTasks({ board_id: id });
     } else {
       await fetchTasks();
     }
@@ -49,33 +58,57 @@ watch(
   { immediate: true }
 );
 
+// pick up boardId from URL (when coming from BoardCard)
+onMounted(() => {
+  const fromQuery = route.query.boardId;
+  if (fromQuery) {
+    const id = Number(fromQuery);
+    selectedBoard.value = id;
+    // preselect in the TaskForm as well
+    if (formState) formState.selectedBoard = id;
+  }
+});
+
+// when the DateCard dropdown changes
 const handleBoardSelected = (board) => {
-  selectedBoard.value = board;
+  selectedBoard.value = board ?? null; // board is object from DateCard
+  if (formState) formState.selectedBoard = toBoardId(board);
 };
 
-const formState = inject("formState");
-
+// after create
 const handleTaskAdded = async () => {
-  formState.showForm = false;
-  if (selectedBoard.value) {
-    await fetchTasks({ board_id: selectedBoard.value });
+  if (formState) formState.showForm = false;
+  const id = toBoardId(selectedBoard.value);
+  if (id) {
+    await fetchTasks({ board_id: id });
   } else {
     await fetchTasks();
   }
 };
 
-const handleTaskUpdated = () => {
-  formState.taskToEdit = null;
-  formState.showEditForm = false;
+// after edit
+const handleTaskUpdated = async () => {
+  if (formState) {
+    formState.taskToEdit = null;
+    formState.showEditForm = false;
+  }
+  const id = toBoardId(selectedBoard.value);
+  if (id) {
+    await fetchTasks({ board_id: id });
+  } else {
+    await fetchTasks();
+  }
 };
 
 const handleCloseForm = () => {
-  formState.showForm = false;
+  if (formState) formState.showForm = false;
 };
 
 const handleCloseEditForm = () => {
-  formState.taskToEdit = null;
-  formState.showEditForm = false;
+  if (formState) {
+    formState.taskToEdit = null;
+    formState.showEditForm = false;
+  }
 };
 </script>
 
@@ -88,3 +121,9 @@ const handleCloseEditForm = () => {
   flex: 1;
 }
 </style>
+
+
+
+
+
+

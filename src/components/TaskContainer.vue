@@ -263,3 +263,10 @@ const completedTasks = computed(() =>
   transition: all 0.3s ease;
 }
 </style>
+
+
+
+
+
+
+

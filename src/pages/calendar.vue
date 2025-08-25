@@ -17,6 +17,7 @@
   <div class="page-container">
     <!-- Main Task Container -->
     <p>Main content</p>
+    <CalendarCard />
   </div>
 </template>
 
