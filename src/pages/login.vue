@@ -1,37 +1,53 @@
 <template>
   <v-app class="login-background">
-    <!-- Apply background here -->
     <v-main>
       <v-container class="fill-height d-flex align-center justify-center">
-        <v-sheet class="login-card" elevation="6" max-width="500" rounded="xl">
-          <h2 class="text-center text-h5 mb-4 font-weight-bold">Log in</h2>
-          <v-divider class="mb-6" />
+        <v-card
+          class="pa-6 mx-auto gradient-bg"
+          elevation="10"
+          max-width="540px"
+          width="100%"
+        >
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h3 class="modal-title">Log in</h3>
+          </div>
 
-          <v-form v-model="form" @submit.prevent="onSubmit">
-            <v-text-field
-              v-model="email"
-              class="mb-4"
-              density="comfortable"
-              label="Username"
-              placeholder="Enter your username"
-              :readonly="loading"
-              rounded
-              :rules="[required]"
-              variant="outlined"
-            />
+          <v-form
+            v-model="form"
+            @submit.prevent="onSubmit"
+            class="form-wrapper"
+          >
+            <div class="input-wrapper">
+              <label for="username" class="custom-label">USERNAME *</label>
+              <v-text-field
+                id="username"
+                v-model="email"
+                variant="solo"
+                density="compact"
+                placeholder="Enter your username.."
+                class="custom-input"
+                :readonly="loading"
+                :rules="[required]"
+                hide-details="auto"
+              />
+            </div>
 
-            <v-text-field
-              v-model="password"
-              class="mb-2"
-              density="comfortable"
-              label="Password"
-              placeholder="Enter your password"
-              :readonly="loading"
-              rounded
-              :rules="[required]"
-              type="password"
-              variant="outlined"
-            />
+            <div class="input-wrapper">
+              <label for="password" class="custom-label">PASSWORD *</label>
+              <v-text-field
+                id="password"
+                v-model="password"
+                type="password"
+                variant="solo"
+                density="compact"
+                placeholder="Enter your password.."
+                class="custom-input"
+                :readonly="loading"
+                :rules="[required]"
+                hide-details="auto"
+              />
+            </div>
 
             <div class="d-flex justify-space-between text-caption mb-4">
               <v-checkbox
@@ -48,28 +64,29 @@
               </a>
             </div>
 
-            <v-btn
-              class="rounded-pill mb-2 login-btn"
-              color="deep-purple-darken-2"
-              :disabled="!form"
-              :loading="loading"
-              size="large"
-              type="submit"
-            >
-              Log in
-            </v-btn>
+            <!-- Buttons -->
+            <div class="button-group">
+              <v-btn
+                class="create-btn"
+                :disabled="!form"
+                :loading="loading"
+                size="large"
+                type="submit"
+              >
+                Log in
+              </v-btn>
 
-            <v-btn
-              class="rounded-pill login-btn"
-              color="deep-purple-darken-2"
-              size="large"
-              variant="outlined"
-              @click="showRegisterModal = true"
-            >
-              Create an account
-            </v-btn>
+              <v-btn
+                class="cancel-btn"
+                size="large"
+                variant="outlined"
+                @click="showRegisterModal = true"
+              >
+                Create an account
+              </v-btn>
+            </div>
           </v-form>
-        </v-sheet>
+        </v-card>
       </v-container>
     </v-main>
 
@@ -89,6 +106,7 @@
     </v-dialog>
   </v-app>
 </template>
+
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
@@ -101,8 +119,6 @@ const password = ref("");
 const loading = ref(false);
 const auth = useAuthStore();
 const router = useRouter();
-
-//controlling the visibility of a modal
 const showRegisterModal = ref(false);
 
 const required = (v) => !!v || "Field is required";
@@ -120,7 +136,7 @@ async function onSubmit() {
 
 const handleRegistrationSuccess = () => {
   showRegisterModal.value = false;
-  alert("Account created successsfuly! You can now log in");
+  alert("Account created successfully! You can now log in");
   email.value = "";
   password.value = "";
 };
@@ -128,25 +144,82 @@ const handleRegistrationSuccess = () => {
 
 <style scoped>
 .login-background {
-  /* background: linear-gradient(135deg, #f3d9fa, #dbeafe); */
-  background: linear-gradient(
-      rgba(243, 217, 250, 0.6),
-      rgba(219, 234, 254, 0.6)
-    ),
-    url("public/image 2.png") no-repeat center center;
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
 }
 
-.login-card {
-  background-color: #f9f6ff;
-  padding: 32px;
+.gradient-bg {
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
   border-radius: 16px;
-  border: 1px solid #ddd;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  width: 500px;
+  padding: 30px !important;
 }
 
-.login-btn {
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.input-wrapper {
+  margin-bottom: 16px;
+}
+
+.custom-label {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: block;
+  color: #6c757d;
+}
+
+::v-deep(.custom-input .v-field) {
+  background-color: white !important;
+  border: 1px solid #f5f5f5 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
   width: 100%;
+}
+
+.cancel-btn {
+  background-color: white;
+  color: #333;
+  border: 1px solid #ddd;
+  flex: 1;
+  text-transform: none !important;
+  border-radius: 12px !important;
+  font-weight: 400 !important;
+}
+
+.create-btn {
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  flex: 1;
+  text-transform: none !important;
+  border-radius: 12px !important;
+  font-weight: 400 !important;
+}
+
+.create-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>
