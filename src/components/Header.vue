@@ -52,7 +52,9 @@ import { ref, watch, inject } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useTasks } from "@/composables/useTasks";
 import LogoutModal from "@/components/LogoutModal.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const { searchQuery, setSearchQuery } = useTasks();
 const search = ref(searchQuery.value);
 const auth = useAuthStore();
@@ -78,8 +80,9 @@ const handleLogout = () => {
 };
 
 //logout handling
-const handleConfirmLogout = () => {
-  auth.logout();
+const handleConfirmLogout = async () => {
+  await auth.logout(router);
+  formState.showLogoutModal = false;
 };
 const handleCloseLogoutModal = () => {
   formState.showLogoutModal = false;
