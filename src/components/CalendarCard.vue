@@ -85,7 +85,7 @@ export default {
   max-height: 550px; /* choose how tall you want the visible area */
   overflow-y: auto; /* enable vertical scrolling */
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 4px;
 }
 
@@ -115,7 +115,27 @@ export default {
   font-size: 0.55rem !important;
   padding: 1px 2px !important;
 }
+.calendar-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
 
+.v-calendar {
+  font-size: 0.7rem;
+}
+
+.v-calendar-month__day {
+  min-height: 70px !important; /* taller so all rows are visible */
+  padding: 2px !important;
+}
+
+.v-calendar-weekdays {
+  font-size: 0.65rem !important;
+  height: 24px !important;
+}
+
+.v-event {
+  font-size: 0.55rem !important;
+  padding: 1px 2px !important;
+}
 </style>
-
-
