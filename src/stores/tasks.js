@@ -44,10 +44,10 @@ export const useTasksStore = defineStore('tasks', {
         console.error('Failed to fetch stats: ', err);
       }
     },
-    async createTask (newTaskData) {
+    async createTask(newTaskData) {
       try {
         const response = await _axios.post('/tasks', newTaskData);
-        //this.tasks.push(response.data.data);
+        this.tasks.push(response.data.data); // <-- add this line
         console.log('Task created successfully!');
       } catch (err) {
         console.error('Failed to create task: ', err);
