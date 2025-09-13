@@ -13,9 +13,9 @@
     >
     </EditTaskForm>
   </v-dialog>
-  <!-- scrollable div -->
+
+  <!-- Page Content -->
   <div class="page-container">
-    <!-- Main Task Container -->
     <p>Main content</p>
     <CalendarCard />
   </div>
@@ -24,8 +24,8 @@
 <script setup>
 import { inject } from "vue";
 import TaskForm from "@/components/TaskForm.vue";
+import EditTaskForm from "@/components/EditTaskForm.vue";
 import CalendarCard from "@/components/CalendarCard.vue";
-import ProgressOverviewCard from "@/components/ProgressOverviewCard.vue";
 
 const formState = inject("formState");
 
@@ -53,5 +53,7 @@ const handleCloseEditForm = () => {
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 16px;
 }
 </style>
+
