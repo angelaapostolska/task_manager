@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useBoardsStore } from "@/stores/boards";
 import BoardCard from "@/components/BoardCard.vue";
 import BoardForm from "@/components/BoardForm.vue";
@@ -42,20 +42,20 @@ const showBoardForm = ref(false);
 const boardsStore = useBoardsStore();
 const boards = boardsStore.boards;
 
-// Add the new board immediately to the list
-const handleBoardCreated = (newBoard) => {
-  boards.push({
-    id: Date.now(), // temporary unique id
-    title: newBoard.title,
-    gradient: newBoard.gradient,
-  });
+// Load boards from backend when component mounts
+onMounted(() => {
+  boardsStore.fetchBoards();
+});
+
+// Add new board via store
+const handleBoardCreated = async (newBoard) => {
+  await boardsStore.createBoard(newBoard);
   showBoardForm.value = false;
 };
 
-// Delete a board
-const deleteBoard = (id) => {
-  const index = boards.findIndex((b) => b.id === id);
-  if (index !== -1) boards.splice(index, 1);
+// Delete a board via store
+const deleteBoard = async (id) => {
+  await boardsStore.deleteBoard(id);
 };
 </script>
 
@@ -77,14 +77,13 @@ const deleteBoard = (id) => {
   border-radius: 12px !important;
   font-weight: 400 !important;
 }
-
-/* Make boards display vertically */
 .boards-container {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 </style>
+
 
 
 

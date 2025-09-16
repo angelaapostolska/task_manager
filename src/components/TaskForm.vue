@@ -149,11 +149,12 @@ const addTaskHandler = async () => {
 
   await addTask({
     title: taskName.value,
-    category: selectedUrgency.value,
+    priority: selectedUrgency.value, // was category
     board_id: selectedBoard.value,
     description: taskDescription.value,
-    end_date: taskEndDate.value,
+    dueAt: taskEndDate.value,       // match the name used in statistics.vue
     state: "pending",
+    completed: false,               // make stats.vue happy
   });
 
   //check whether you need this in the parent??

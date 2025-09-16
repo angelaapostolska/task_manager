@@ -47,7 +47,13 @@ export const useTasksStore = defineStore('tasks', {
     async createTask(newTaskData) {
       try {
         const response = await _axios.post('/tasks', newTaskData);
-        this.tasks.push(response.data.data); // <-- add this line
+        const task = response.data.data;
+
+        // Normalize fields
+        task.priority = task.priority || task.category; // fallback
+        task.completed = task.state === 'completed';
+
+        this.tasks.push(task);
         console.log('Task created successfully!');
       } catch (err) {
         console.error('Failed to create task: ', err);
@@ -74,11 +80,14 @@ export const useTasksStore = defineStore('tasks', {
         console.error('Failed to delete task: ', err);
       }
     },
-    async markTaskCompleted (taskId) {
+    async markTaskCompleted(taskId) {
       try {
         await _axios.patch(`/tasks/${taskId}/completeTask`);
         const task = this.tasks.find(t => t.id === taskId);
-        if (task) task.state = 'completed';
+        if (task) {
+          task.state = 'completed';
+          task.completed = true; // ✅ keep stats.vue reactive
+        }
         console.log('Task marked completed with backend');
       } catch (err) {
         console.error('Failed to mark task as completed:', err);
